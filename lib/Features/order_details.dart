@@ -1,6 +1,8 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:tej_mart/Features/invoice.dart';
+import 'package:tej_mart/Features/pdfprevies.dart';
 import 'package:tej_mart/SalesExecutives/models/sales_addProduct.dart';
 import 'package:tej_mart/constants/colors.dart';
 import 'package:tej_mart/constants/style.dart';
@@ -39,9 +41,28 @@ class _MyOrderDetailsState extends State<MyOrderDetails> {
           Gap(30),
           Padding(
             padding: const EdgeInsets.all(10.0),
-            child: Text(
-              "Total Items are bought ${quantity}",
-              style: textStyle().copyWith(color: black, fontSize: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "Total Items ${quantity}",
+                  style: textStyle().copyWith(color: black, fontSize: 20),
+                ),
+                GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (_) => PdfPreviewS(
+                                map: widget.product,
+                              )));
+                    },
+                    child: Text(
+                      "Invoice",
+                      style: textStyle().copyWith(
+                          color: indigo,
+                          decoration: TextDecoration.underline,
+                          fontSize: 16),
+                    ))
+              ],
             ),
           ),
           Expanded(
@@ -51,7 +72,7 @@ class _MyOrderDetailsState extends State<MyOrderDetails> {
                   double price =
                       list[index].price * (1 - (list[index].discount / 100.00));
                   String data = "";
-                  print(widget.product['products']['product'][index]);
+
                   return MySignleOrderDetailsContainer(
                     name: list[index].name,
                     price: price.toString(),

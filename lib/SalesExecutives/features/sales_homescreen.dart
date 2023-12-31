@@ -34,7 +34,8 @@ class _MySalesHomeScreenState extends State<MySalesHomeScreen> {
 
   List<SalesAddProductModel>? list;
 
-  getAllProducts() async {
+  Future<void> getAllProducts() async {
+    print(widget.sales_id);
     list = await SalesProductService()
         .getAllProducts(context: context, sales_id: widget.sales_id);
     setState(() {});
@@ -45,28 +46,31 @@ class _MySalesHomeScreenState extends State<MySalesHomeScreen> {
     return Scaffold(
       body: list == null
           ? MyLoader(color: indigo)
-          : GridView.builder(
-              itemCount: list!.length,
-              gridDelegate:
-                  SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-              itemBuilder: ((context, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: GestureDetector(
-                    onTap: () {
-                      Navigator.pushNamed(
-                          context, MySalesDetailsScreen.routeName,
-                          arguments: {"product": list![index]});
-                    },
-                    child: MyTrendingContainer(
-                      itemName: list![index].name,
-                      forName: list![index].category,
-                      price: list![index].price,
-                      url: list![index].images[0],
-                    ),
-                  ),
-                );
-              })),
+          : RefreshIndicator(
+              onRefresh: getAllProducts,
+              child: GridView.builder(
+                  itemCount: list!.length,
+                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2),
+                  itemBuilder: ((context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(
+                              context, MySalesDetailsScreen.routeName,
+                              arguments: {"product": list![index]});
+                        },
+                        child: MyTrendingContainer(
+                          itemName: list![index].name,
+                          forName: list![index].category,
+                          price: list![index].price,
+                          url: list![index].images[0],
+                        ),
+                      ),
+                    );
+                  })),
+            ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.pushNamed(

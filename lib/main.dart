@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tej_mart/Features/init_screen.dart';
+import 'package:tej_mart/Features/invoice.dart';
+import 'package:tej_mart/Features/pdfprevies.dart';
 import 'package:tej_mart/SalesExecutives/features/sales_bottom_bar.dart';
 import 'package:tej_mart/SalesExecutives/features/sales_homescreen.dart';
 import 'package:tej_mart/constants/colors.dart';
@@ -14,7 +16,7 @@ void main() {
     providers: [
       ChangeNotifierProvider(create: (_) => SalesExecutiveProvider()),
       ChangeNotifierProvider(create: (_) => CustomerProvider()),
-      ChangeNotifierProvider(create: (_)=>CartProvider())
+      ChangeNotifierProvider(create: (_) => CartProvider())
     ],
     child: const MyApp(),
   ));

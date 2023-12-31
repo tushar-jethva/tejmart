@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
+import 'package:tej_mart/Features/init_screen.dart';
 import 'package:tej_mart/Features/order_details.dart';
 import 'package:tej_mart/SalesExecutives/models/sales_addProduct.dart';
 import 'package:tej_mart/constants/colors.dart';
@@ -40,7 +41,6 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
     details =
         await UserAuthService().getUser(context: context, user_id: user_id);
     setState(() {});
-    print(details);
   }
 
   getAllUserOrders(String user_id) async {
@@ -55,10 +55,19 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
     final user = Provider.of<CustomerProvider>(context, listen: false).user;
     return Scaffold(
       appBar: AppBar(
-          title: Text(
-        "Welcome ${user.name}",
-        style: textStyle().copyWith(color: black),
-      )),
+        title: Text(
+          "Welcome ${user.name}",
+          style: textStyle().copyWith(color: black),
+        ),
+        actions: [
+          GestureDetector(
+              onTap: () {
+                Navigator.pushNamedAndRemoveUntil(
+                    context, MyInitScreen.routeName, (route) => false);
+              },
+              child: Icon(Icons.logout))
+        ],
+      ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

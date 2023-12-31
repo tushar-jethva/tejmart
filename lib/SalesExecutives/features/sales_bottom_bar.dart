@@ -1,8 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:tej_mart/Features/profile_screen.dart';
+import 'package:tej_mart/SalesExecutives/features/analytical.dart';
 
 import 'package:tej_mart/SalesExecutives/features/sales_homescreen.dart';
+import 'package:tej_mart/SalesExecutives/features/sales_order.dart';
+import 'package:tej_mart/SalesExecutives/features/sales_profile.dart';
 import 'package:tej_mart/providers/salse_user_provider.dart';
 
 import '../../constants/colors.dart';
@@ -33,9 +37,9 @@ class _MySalesBottomBarState extends State<MySalesBottomBar> {
       MySalesHomeScreen(
         sales_id: widget.map['sales_id']!,
       ),
-      Text("Analytical Screen"),
-      Text("Order Screen"),
-      Text("Profile Screen"),
+    
+      MySalesOrderScreen(),
+      MySalesProfileScreen(),
     ];
     return Scaffold(
       body: Center(
@@ -63,21 +67,11 @@ class _MySalesBottomBarState extends State<MySalesBottomBar> {
                 color: white,
               ),
             ),
+            
             GestureDetector(
               onTap: () {
                 setState(() {
                   currIndex = 1;
-                });
-              },
-              child: Icon(
-                Icons.analytics,
-                color: white,
-              ),
-            ),
-            GestureDetector(
-              onTap: () {
-                setState(() {
-                  currIndex = 2;
                 });
               },
               child: Icon(
@@ -88,7 +82,7 @@ class _MySalesBottomBarState extends State<MySalesBottomBar> {
             GestureDetector(
               onTap: () {
                 setState(() {
-                  currIndex = 3;
+                  currIndex = 2;
                 });
               },
               child: Icon(

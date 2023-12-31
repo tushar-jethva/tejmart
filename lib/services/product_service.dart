@@ -35,4 +35,28 @@ class CustomerProductService {
     }
     return categoryProducts;
   }
+
+  Future<List<SalesAddProductModel>> getAllSystemProducts(
+      {required BuildContext context}) async {
+    List<SalesAddProductModel> list = [];
+    try {
+      http.Response res = await http.get(
+          Uri.parse("$url/api/getAllSystemProducts"),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8'
+          });
+
+      httpErrorHandled(
+          res: res,
+          context: context,
+          onSuccess: () {
+            for (int i = 0; i < jsonDecode(res.body).length; i++) {
+              list.add(SalesAddProductModel.fromMap(jsonDecode(res.body)[i]));
+            }
+          });
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+    return list;
+  }
 }

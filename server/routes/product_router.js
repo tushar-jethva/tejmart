@@ -31,7 +31,9 @@ productRouter.get('/api/getAllProducts',async(req,res)=>{
     try{
         
         let products = await ProductModel.find({sales_id:req.query.sales_id});
+        // console.log(req.query.sales_id)
         res.json(products);
+        
     }
     catch(e){
         return res.status(500).json({error:e.message});
@@ -61,6 +63,29 @@ productRouter.get('/api/getCategoryProducts',async(req,res)=>{
         return res.status(500).json({error:e.message});
     }
 });
+
+productRouter.get('/api/getAllSalesmanWiseProducts',async(req,res)=>{
+    try{
+
+        let products = await ProductModel.find({"sales_id":req.query.sales_id})
+        res.json(products);
+    }
+    catch(e){
+        return res.status(500).json({error:e.message});
+
+    }
+});
+
+productRouter.get('/api/getAllSystemProducts',async(req,res)=>{
+    try{
+        let product = await ProductModel.find({});
+        res.json(product);
+    }
+    catch(e){
+        return res.status(500).json({error:e.message});
+        
+    }
+})
 
 
 

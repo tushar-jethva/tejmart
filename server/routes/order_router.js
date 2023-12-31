@@ -4,7 +4,7 @@ const CartModel = require('../models/cart_model')
 const UserModel = require('../models/user_model');
 const { ProductModel } = require('../models/product_model');
 const OrderSellerModel = require('../models/order_seller');
-// ObjectId = require('mongoose').ObjectID;
+const nodemailer = require("nodemailer");
 const orderRouter = express.Router();
 
 orderRouter.post("/api/placeOrder",async(req,res)=>{
@@ -72,7 +72,7 @@ orderRouter.get("/api/getAllUserOrders",async(req,res)=>{
                 "status":status
             }
             product_list.push(m);
-            console.log(m);
+            
         }
         let map = {
             "product":product_list,
@@ -86,15 +86,107 @@ orderRouter.get("/api/getAllUserOrders",async(req,res)=>{
 });
 
 orderRouter.get("/api/getSalesOrders",async(req,res)=>{
-    let orders = await OrderSellerModel.find({seller_id:req.query.seller_id});
-
+    let orders = await OrderSellerModel.find({seller_id:req.query.seller_id,status:0});
+    console.log(req.query.seller_id);
     let sellerProducts = [];
     for(let i=0;i<orders.length;i++){
-        let product = await ProductModel.findById(orders[i]['product_id']);
-        sellerProducts.push(product);
+        
+            let product = await ProductModel.findById(orders[i]['product_id']);
+            let map = {
+                "product":product,
+                "quantity_product":orders[i].quantity_product,
+                "status":orders[i].status,
+                "order_id":orders[i].order_id
+            }
+            sellerProducts.push(map);
+        
     }
     res.json(sellerProducts);
 });
+
+orderRouter.get("/api/getCompletedOrder",async(req,res)=>{
+    let orders = await OrderSellerModel.find({seller_id:req.query.seller_id,status:1});
+    console.log(req.query.seller_id);
+    let sellerProducts = [];
+    console.log(orders)
+    for(let i=0;i<orders.length;i++){
+       
+            let product = await ProductModel.findById(orders[i]['product_id']);
+            let map = {
+                "product":product,
+                "quantity_product":orders[i].quantity_product,
+                "status":orders[i].status,
+                "order_id":orders[i].order_id
+            }
+            sellerProducts.push(map);
+        
+    }
+    res.json(sellerProducts);
+});
+
+orderRouter.post("/api/mail",async(req,res)=>{
+    try{
+       const{receiveremail} = req.body;
+
+        let sender = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'jethvatushar55@gmail.com',
+                pass: '9978003090'
+            }
+        });
+
+        let mail = {
+            from: "jethvatushar87@gmail.com",
+            to: receiveremail,
+            subject: "Sending Email using Node.js",
+            text: "That was easy!"
+        };
+
+        sender.sendMail(mail, function (error, info) {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log("Email sent successfully: "
+                    + info.response);
+            }
+            });
+
+            res.json({"msg":"Hello"});
+    }
+    catch(e){
+        res.status(500).json({error:e.message});
+    }
+});
+
+orderRouter.post("/api/acceptOrder",async(req,res)=>{
+    try{
+        const{order_id,product_id} = req.body;
+
+        const oneOrderProduct = await OrderSellerModel.findOneAndUpdate({"order_id":order_id,"product_id":product_id},{"status":1},{new:true});
+        res.json(oneOrderProduct);
+
+    }
+    catch(e){
+        res.status(500).json({error:e.message});
+
+    }
+})
+
+
+orderRouter.post("/api/declineOrder",async(req,res)=>{
+    try{
+        const{order_id,product_id} = req.body;
+
+        const oneOrderProduct = await OrderSellerModel.findOneAndUpdate({"order_id":order_id,"product_id":product_id},{"status":2},{new:true});
+        res.json(oneOrderProduct);
+
+    }
+    catch(e){
+        res.status(500).json({error:e.message});
+
+    }
+})
 
 
 module.exports = orderRouter;

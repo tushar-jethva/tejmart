@@ -7,11 +7,14 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:tej_mart/Features/cartscreen.dart';
 import 'package:tej_mart/Features/category_items.dart';
+import 'package:tej_mart/SalesExecutives/models/sales_addProduct.dart';
 import 'package:tej_mart/constants/colors.dart';
 import 'package:tej_mart/constants/images_link.dart';
 import 'package:tej_mart/providers/customer_provider.dart';
+import 'package:tej_mart/services/product_service.dart';
 import 'package:tej_mart/widgets/bottom_dots.dart';
 import 'package:tej_mart/widgets/bottombar.dart';
+import 'package:tej_mart/widgets/category_contaier.dart';
 import 'package:tej_mart/widgets/circle_avatar.dart';
 import 'package:tej_mart/widgets/one_carousel.dart';
 import 'package:tej_mart/widgets/trending_container.dart';
@@ -34,6 +37,7 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
   late final PageController pageController;
   late Timer timer;
   int currIndex = 0;
+  List<SalesAddProductModel>? list;
   @override
   void initState() {
     // TODO: implement initState
@@ -46,9 +50,15 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
     });
   }
 
+  getAllSystemProducts() async {
+    list =
+        await CustomerProductService().getAllSystemProducts(context: context);
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
-    final cust = Provider.of<CustomerProvider>(context,listen: false).user;
+    final cust = Provider.of<CustomerProvider>(context, listen: false).user;
     return Scaffold(
       backgroundColor: white,
       body: SingleChildScrollView(
@@ -73,7 +83,8 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
                   ),
                   GestureDetector(
                     onTap: () {
-                      Navigator.pushNamed(context, MyCartScreen.routeName,arguments: {'user_id':cust.id});
+                      Navigator.pushNamed(context, MyCartScreen.routeName,
+                          arguments: {'user_id': cust.id});
                     },
                     child: Icon(
                       Icons.shopping_bag_rounded,
@@ -206,15 +217,17 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
               children: [
                 MyTrendingContainer(
                   itemName: "Suit",
-                  forName: "Man",
-                  price: 50,
-                  url: "",
+                  price: 100,
+                  forName: "Men",
+                  url:
+                      "https://img.freepik.com/free-vector/flat-spring-social-media-post-template_23-2149291888.jpg?w=900&t=st=1702316337~exp=1702316937~hmac=9816a124f21c48f10ba02e7a1d2b3ba77481a2ff47c5ac1293f17881fa4249c7",
                 ),
                 MyTrendingContainer(
                   itemName: "Suit",
                   forName: "Man",
                   price: 50,
-                  url: "",
+                  url:
+                      "https://img.freepik.com/free-vector/flat-spring-social-media-post-template_23-2149291888.jpg?w=900&t=st=1702316337~exp=1702316937~hmac=9816a124f21c48f10ba02e7a1d2b3ba77481a2ff47c5ac1293f17881fa4249c7",
                 ),
               ],
             ),
@@ -226,35 +239,18 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
                   itemName: "Suit",
                   forName: "Man",
                   price: 50,
-                  url: "",
+                  url:
+                      "https://img.freepik.com/free-vector/flat-spring-social-media-post-template_23-2149291888.jpg?w=900&t=st=1702316337~exp=1702316937~hmac=9816a124f21c48f10ba02e7a1d2b3ba77481a2ff47c5ac1293f17881fa4249c7",
                 ),
                 MyTrendingContainer(
                   itemName: "Suit",
                   forName: "Man",
                   price: 50,
-                  url: "",
+                  url:
+                      "https://img.freepik.com/free-vector/flat-spring-social-media-post-template_23-2149291888.jpg?w=900&t=st=1702316337~exp=1702316937~hmac=9816a124f21c48f10ba02e7a1d2b3ba77481a2ff47c5ac1293f17881fa4249c7",
                 ),
               ],
             ),
-            const Gap(20),
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                MyTrendingContainer(
-                  itemName: "Suit",
-                  forName: "Man",
-                  price: 50,
-                  url: "",
-                ),
-                MyTrendingContainer(
-                  itemName: "Suit",
-                  forName: "Man",
-                  price: 50,
-                  url: "",
-                ),
-              ],
-            ),
-            Gap(10),
           ],
         ),
       ),
