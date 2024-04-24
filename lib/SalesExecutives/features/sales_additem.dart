@@ -248,7 +248,7 @@ class _MySalesAddProductScreenState extends State<MySalesAddProductScreen> {
                                   ),
                                   Gap(15),
                                   Text(
-                                    'Select Product Images',
+                                    'Select Product Images',  
                                     style: TextStyle(
                                         fontSize: 15,
                                         color: Colors.grey.shade400),
@@ -267,7 +267,7 @@ class _MySalesAddProductScreenState extends State<MySalesAddProductScreen> {
                                 }).toList(),
                                 options: CarouselOptions(
                                     enableInfiniteScroll: false,
-                                    autoPlay: true,
+                                    autoPlay: true,         
                                     autoPlayAnimationDuration:
                                         Duration(milliseconds: 1000),
                                     pauseAutoPlayOnTouch: true),

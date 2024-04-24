@@ -3,7 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:tej_mart/constants/style.dart';
 import 'package:pdf/widgets.dart' as pw;
 
-String url = 'http://192.168.230.229:3000';
+String url = 'http://192.168.103.164:3000';
 
 Future<List<XFile?>> pickMultipleImages() async {
   List<XFile?> images = await ImagePicker().pickMultiImage(

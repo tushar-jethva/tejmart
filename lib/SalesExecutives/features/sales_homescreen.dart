@@ -1,7 +1,9 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:tej_mart/Features/details_screen.dart';
+import 'package:tej_mart/SalesExecutives/controllers/sales_home_controller.dart';
 
 import 'package:tej_mart/SalesExecutives/features/sales_additem.dart';
 import 'package:tej_mart/SalesExecutives/features/sales_details_screen.dart';
@@ -25,32 +27,32 @@ class MySalesHomeScreen extends StatefulWidget {
 }
 
 class _MySalesHomeScreenState extends State<MySalesHomeScreen> {
+  final salesHomeController = Get.put(MySalesHomeController());
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    getAllProducts();
+    // getAllProducts();
+    salesHomeController.getAllProducts(sales_id: widget.sales_id, context: context);
   }
 
-  List<SalesAddProductModel>? list;
+  // List<SalesAddProductModel>? list;
 
-  Future<void> getAllProducts() async {
-    print(widget.sales_id);
-    list = await SalesProductService()
-        .getAllProducts(context: context, sales_id: widget.sales_id);
-    setState(() {});
-  }
+  // Future<void> getAllProducts() async {
+  //   print(widget.sales_id);
+  //   list = await SalesProductService()
+  //       .getAllProducts(context: context, sales_id: widget.sales_id);
+  //   setState(() {});
+  // }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: list == null
+      body: salesHomeController.list.isEmpty
           ? MyLoader(color: indigo)
-          : RefreshIndicator(
-              onRefresh: getAllProducts,
-              child: GridView.builder(
-                  itemCount: list!.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          :GridView.builder(
+                  itemCount: salesHomeController.list.length,
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2),
                   itemBuilder: ((context, index) {
                     return Padding(
@@ -59,18 +61,18 @@ class _MySalesHomeScreenState extends State<MySalesHomeScreen> {
                         onTap: () {
                           Navigator.pushNamed(
                               context, MySalesDetailsScreen.routeName,
-                              arguments: {"product": list![index]});
+                              arguments: {"product": salesHomeController.list[index]});
                         },
                         child: MyTrendingContainer(
-                          itemName: list![index].name,
-                          forName: list![index].category,
-                          price: list![index].price,
-                          url: list![index].images[0],
+                          itemName: salesHomeController.list[index].name,
+                          forName: salesHomeController.list[index].category,
+                          price: salesHomeController.list[index].price,
+                          url: salesHomeController.list[index].images[0],
                         ),
                       ),
                     );
                   })),
-            ),
+            
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.pushNamed(

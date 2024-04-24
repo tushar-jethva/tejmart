@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:tej_mart/Features/init_screen.dart';
-import 'package:tej_mart/Features/invoice.dart';
-import 'package:tej_mart/Features/pdfprevies.dart';
-import 'package:tej_mart/SalesExecutives/features/sales_bottom_bar.dart';
-import 'package:tej_mart/SalesExecutives/features/sales_homescreen.dart';
 import 'package:tej_mart/constants/colors.dart';
 import 'package:tej_mart/providers/cart_provider.dart';
 import 'package:tej_mart/providers/customer_provider.dart';
