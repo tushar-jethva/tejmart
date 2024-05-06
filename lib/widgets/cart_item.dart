@@ -3,15 +3,18 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:tej_mart/constants/colors.dart';
 import 'package:tej_mart/constants/constants.dart';
+import 'package:tej_mart/controller/user_controller.dart';
 import 'package:tej_mart/providers/cart_provider.dart';
 import 'package:tej_mart/services/cart_service.dart';
 import '../constants/style.dart';
 
 class MyOneCartItem extends StatefulWidget {
+  final String user_id;
   final String id;
   final String itemName;
   final String shopName;
@@ -21,10 +24,10 @@ class MyOneCartItem extends StatefulWidget {
   final String image;
   final int quantity;
   final Color color;
-  final VoidCallback refresh;
   final bool isQuantityRequired;
   const MyOneCartItem(
       {Key? key,
+      required this.user_id,
       required this.itemName,
       required this.shopName,
       required this.disPrice,
@@ -33,10 +36,8 @@ class MyOneCartItem extends StatefulWidget {
       required this.image,
       required this.color,
       required this.id,
-      required this.refresh,
       required this.quantity,
-      this.isQuantityRequired = true
-      })
+      this.isQuantityRequired = true})
       : super(key: key);
 
   @override
@@ -44,12 +45,17 @@ class MyOneCartItem extends StatefulWidget {
 }
 
 class _MyOneCartItemState extends State<MyOneCartItem> {
+  final userController = Get.put(UserController());
+
   bool itemDelete = false;
   deleteItem() async {
     await CartService().deleteFromCart(
       context: context,
       product_id: widget.id,
       onSuccess: () {
+        print("Delete");
+        userController.getAllCustomerCartProducts(
+            user_id: widget.user_id, context: context);
         showSnackBar(context, "Deleted");
       },
     );
@@ -159,14 +165,16 @@ class _MyOneCartItemState extends State<MyOneCartItem> {
                       ),
                     ],
                   ),
-                  widget.isQuantityRequired? Text("x${widget.quantity}"):SizedBox.shrink()
+                  widget.isQuantityRequired
+                      ? Text("x${widget.quantity}")
+                      : SizedBox.shrink()
                 ],
               ),
             ),
           ),
           Gap(5),
           GestureDetector(
-            onTap: () async {
+            onTap: () {
               deleteItem();
             },
             child: Container(

@@ -8,13 +8,13 @@ cartRouter.post('/api/addCartProduct',async(req,res)=>{
         const{user_id,product_id,quantity_product} = req.body;
         
         let isExist = await CartModel.findOne({product_id:product_id,user_id:user_id});
+        console.log(isExist);
         if(isExist){
             let num = isExist.quantity_product;
-            
             isExist =  await CartModel.findOneAndUpdate({product_id:product_id,user_id:user_id},{"quantity_product":num+quantity_product},{new:true});
-            return res.json(isExist);
+        console.log(isExist);
+        return res.json(isExist);
         }
-        // console.log(isExist);
 
         let cart = new CartModel(
             {
@@ -81,6 +81,7 @@ cartRouter.get('/api/getAllCustomerCartProducts',async(req,res)=>{
 cartRouter.get('/api/deleteFromCart',async(req,res)=>{
     try{
         await CartModel.findOneAndDelete({"product_id":req.query.product_id});
+        res.json({"Delete":"Deleted"});
     }
     catch(e){
         return res.status(500).json({error:e.message});

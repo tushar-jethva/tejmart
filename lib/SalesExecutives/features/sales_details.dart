@@ -191,6 +191,7 @@ class _MySalesDetailsScreenState extends State<MySalesDetailsScreen> {
         ),
         bottomNavigationBar: !widget.isCompleted
             ? MyOrderBottom(
+              sales_id: object.sales_id,
                 order_id: widget.map['order_id'],
                 product_id: object.id,
               )

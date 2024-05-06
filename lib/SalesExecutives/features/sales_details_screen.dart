@@ -3,7 +3,9 @@ import 'dart:async';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tej_mart/SalesExecutives/controllers/sales_home_controller.dart';
 import 'package:tej_mart/SalesExecutives/models/sales_addProduct.dart';
 import 'package:tej_mart/SalesExecutives/services/sales_prooduct_service.dart';
 import 'package:tej_mart/SalesExecutives/widgets/delete_button.dart';
@@ -31,6 +33,8 @@ class MySalesDetailsScreen extends StatefulWidget {
 
 class _MySalesDetailsScreen extends State<MySalesDetailsScreen> {
   late final PageController pageController;
+  final salesHomeController = Get.put(MySalesController());
+
   late Timer timer;
   int currIndex = 0;
   int number = 0;
@@ -65,6 +69,9 @@ class _MySalesDetailsScreen extends State<MySalesDetailsScreen> {
       context: context,
       product_id: id,
     );
+
+    salesHomeController.getAllProducts(
+        context: context, sales_id: widget.map['product'].sales_id);
     setState(() {
       isDelete = true;
     });

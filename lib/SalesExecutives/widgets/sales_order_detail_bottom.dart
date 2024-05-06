@@ -1,33 +1,43 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
+import 'package:tej_mart/SalesExecutives/controllers/sales_home_controller.dart';
 import 'package:tej_mart/SalesExecutives/services/sales_prooduct_service.dart';
 
 import '../../constants/colors.dart';
 import '../../widgets/custom_button.dart';
 
 class MyOrderBottom extends StatefulWidget {
+  final String sales_id;
   final String order_id;
   final String product_id;
-  const MyOrderBottom({
-    Key? key,
-    required this.order_id,
-    required this.product_id,
-  }) : super(key: key);
+  const MyOrderBottom(
+      {Key? key,
+      required this.order_id,
+      required this.product_id,
+      required this.sales_id})
+      : super(key: key);
 
   @override
   State<MyOrderBottom> createState() => _MyOrderBottomState();
 }
 
 class _MyOrderBottomState extends State<MyOrderBottom> {
+  final salesHomeController = Get.put(MySalesController());
+
   acceptOrder(String order_id, String product_id) async {
     SalesProductService().acceptOrder(
         context: context, order_id: order_id, product_id: product_id);
+    salesHomeController.getAllSalesProduct(
+        sales_id: widget.sales_id, context: context);
   }
 
   declineOrder(String order_id, String product_id) async {
     SalesProductService().declineOrder(
         context: context, order_id: order_id, product_id: product_id);
+    salesHomeController.getAllSalesProduct(
+        sales_id: widget.sales_id, context: context);
   }
 
   @override

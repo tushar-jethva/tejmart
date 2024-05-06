@@ -42,6 +42,7 @@ class _MyAddToBagButtonState extends State<MyAddToBagButton> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.quantity_product);
     return Container(
       height: 50,
       width: double.infinity,

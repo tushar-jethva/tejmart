@@ -162,7 +162,6 @@ orderRouter.post("/api/mail",async(req,res)=>{
 orderRouter.post("/api/acceptOrder",async(req,res)=>{
     try{
         const{order_id,product_id} = req.body;
-
         const oneOrderProduct = await OrderSellerModel.findOneAndUpdate({"order_id":order_id,"product_id":product_id},{"status":1},{new:true});
         res.json(oneOrderProduct);
 

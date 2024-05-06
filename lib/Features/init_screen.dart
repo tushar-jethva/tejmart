@@ -1,12 +1,9 @@
 import 'dart:async';
-
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
-import 'package:tej_mart/Features/homescreen.dart';
 import 'package:tej_mart/Features/signin.dart';
 import 'package:tej_mart/SalesExecutives/features/sales_sign_in.dart';
 import 'package:tej_mart/constants/colors.dart';
-import 'package:tej_mart/widgets/bottom_dots.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tej_mart/widgets/custom_button.dart';
 
@@ -30,10 +27,9 @@ class _MyInitScreenState extends State<MyInitScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     pageController = PageController(initialPage: 0);
-    timer = Timer.periodic(Duration(seconds: 2), (timer) {
+    timer = Timer.periodic(const Duration(seconds: 2), (timer) {
       pageController.animateToPage(currIndex % list.length,
           duration: const Duration(seconds: 1), curve: Curves.fastOutSlowIn);
       currIndex++;
@@ -52,13 +48,13 @@ class _MyInitScreenState extends State<MyInitScreen> {
                 height: 490,
                 child: PageView(
                   controller: pageController,
-                  children: list,
                   scrollDirection: Axis.horizontal,
                   onPageChanged: (value) {
                     setState(() {
                       currIndex = value;
                     });
                   },
+                  children: list,
                 ),
               ),
               Positioned(
@@ -106,7 +102,7 @@ class _MyInitScreenState extends State<MyInitScreen> {
               ),
             ),
           ),
-          Gap(40),
+          const Gap(80),
           InkWell(
             onTap: () {
               Navigator.pushNamed(context, MySignInScreen.routeName);

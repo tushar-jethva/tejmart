@@ -1,8 +1,11 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
+import 'package:tej_mart/SalesExecutives/controllers/sales_home_controller.dart';
 import 'package:tej_mart/SalesExecutives/services/sales_prooduct_service.dart';
 import 'package:tej_mart/constants/colors.dart';
 import 'package:tej_mart/constants/constants.dart';
@@ -36,6 +39,8 @@ class _MySalesAddProductScreenState extends State<MySalesAddProductScreen> {
   final FocusNode _discountFocus = FocusNode();
   final FocusNode _quantityFocus = FocusNode();
   final FocusNode _descriptionFocus = FocusNode();
+
+  final salesHomeController = Get.put(MySalesController());
 
   final _formKey = GlobalKey<FormState>();
   bool isProductAdded = false;
@@ -105,6 +110,8 @@ class _MySalesAddProductScreenState extends State<MySalesAddProductScreen> {
       shop_name: shop_name,
       images: images,
       onSuccess: () {
+        salesHomeController.getAllProducts(
+            sales_id: sales_id, context: context);
         Navigator.pop(context);
         showSnackBar(context, "Product is added");
         setState(() {});
@@ -248,7 +255,7 @@ class _MySalesAddProductScreenState extends State<MySalesAddProductScreen> {
                                   ),
                                   Gap(15),
                                   Text(
-                                    'Select Product Images',  
+                                    'Select Product Images',
                                     style: TextStyle(
                                         fontSize: 15,
                                         color: Colors.grey.shade400),
@@ -267,7 +274,7 @@ class _MySalesAddProductScreenState extends State<MySalesAddProductScreen> {
                                 }).toList(),
                                 options: CarouselOptions(
                                     enableInfiniteScroll: false,
-                                    autoPlay: true,         
+                                    autoPlay: true,
                                     autoPlayAnimationDuration:
                                         Duration(milliseconds: 1000),
                                     pauseAutoPlayOnTouch: true),

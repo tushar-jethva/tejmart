@@ -1,4 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
@@ -132,9 +134,13 @@ class _MyBuyScreenState extends State<MyBuyScreen> {
                   Gap(20),
                   GestureDetector(
                     onTap: () {
-                      addAmount(user_id);
-                      Navigator.pop(context);
-                      _balanceController.text = "0";
+                      if (double.parse(_balanceController.text) > 0) {
+                        addAmount(user_id);
+                        Navigator.pop(context);
+                        _balanceController.text = "0";
+                      } else {
+                        showSnackBar(context, "Amount must be greater than 0");
+                      }
                     },
                     child: MyCustomButton(
                         color: indigo,

@@ -68,7 +68,7 @@ class CartService {
     }
   }
 
-  Future<Map<String,List<dynamic>>> getAllCustomerCartProducts({
+  Future<Map<String, List<dynamic>>> getAllCustomerCartProducts({
     required BuildContext context,
     required String user_id,
   }) async {
@@ -103,11 +103,13 @@ class CartService {
       required String product_id,
       required VoidCallback onSuccess}) async {
     try {
+      print("Delete from cart");
       http.Response res = await http.get(
           Uri.parse('${url}/api/deleteFromCart?product_id=$product_id'),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8'
           });
+      print(res.statusCode);
       // ignore: use_build_context_synchronously
       httpErrorHandled(res: res, context: context, onSuccess: onSuccess);
     } catch (e) {
