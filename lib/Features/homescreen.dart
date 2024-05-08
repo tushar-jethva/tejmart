@@ -1,7 +1,4 @@
 import 'dart:async';
-import 'dart:html';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
@@ -15,9 +12,6 @@ import 'package:tej_mart/constants/images_link.dart';
 import 'package:tej_mart/constants/sizes.dart';
 import 'package:tej_mart/providers/customer_provider.dart';
 import 'package:tej_mart/services/product_service.dart';
-import 'package:tej_mart/widgets/bottom_dots.dart';
-import 'package:tej_mart/widgets/bottombar.dart';
-import 'package:tej_mart/widgets/category_contaier.dart';
 import 'package:tej_mart/widgets/circle_avatar.dart';
 import 'package:tej_mart/widgets/one_carousel.dart';
 import 'package:tej_mart/widgets/trending_container.dart';
