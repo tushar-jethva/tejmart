@@ -3,7 +3,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:tej_mart/constants/style.dart';
 import 'package:pdf/widgets.dart' as pw;
 
-String url = 'http://192.168.90.230:3000';
+String url = 'https://tej-mart.onrender.com';
 
 Future<List<XFile?>> pickMultipleImages() async {
   List<XFile?> images = await ImagePicker().pickMultiImage(
