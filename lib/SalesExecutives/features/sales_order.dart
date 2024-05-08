@@ -21,36 +21,26 @@ class _MySalesOrderScreenState extends State<MySalesOrderScreen> {
   final salesHomeController = Get.put(MySalesController());
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       final saler =
           Provider.of<SalesExecutiveProvider>(context, listen: false).user;
       salesHomeController.getAllSalesProduct(
           context: context, sales_id: saler.id);
-      // getAllSalesProduct(saler.id);
     });
   }
 
-  // List<Map<String, dynamic>>? list;
-
-  // getAllSalesProduct(String sales_id) async {
-  //   list = await SalesProductService()
-  //       .getAllSalesProducts(context: context, seller_id: sales_id);
-  //   setState(() {});
-  //   print(list);
-  // }
 
   @override
   Widget build(BuildContext context) {
     return Obx(
       () => Scaffold(
         body: salesHomeController.listOfIncomingOrders.isEmpty
-            ? Center(
+            ? const Center(
                 child: Text("No items"),
               )
             : GridView.builder(
-                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2),
                 itemCount: salesHomeController.listOfIncomingOrders.length,
                 itemBuilder: ((context, index) {

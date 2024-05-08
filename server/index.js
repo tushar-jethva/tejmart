@@ -1,6 +1,7 @@
 //Imports from packages
 const express = require('express')
 const mongoose = require('mongoose')
+const cors = require('cors')
 
 //Imports from other files
 const authRouter = require('./routes/auth_router')
@@ -22,6 +23,7 @@ const app = express();
 
 //middleware
 app.use(express.json())
+app.use(cors())
 app.use(authRouter)
 app.use(salesExecutiveRouter)
 app.use(productRouter)

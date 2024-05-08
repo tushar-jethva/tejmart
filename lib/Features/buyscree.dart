@@ -1,13 +1,15 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:ffi';
 
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import 'package:tej_mart/constants/colors.dart';
 import 'package:tej_mart/constants/constants.dart';
 import 'package:tej_mart/constants/style.dart';
+import 'package:tej_mart/controller/user_controller.dart';
 import 'package:tej_mart/models/address_and_amount.dart';
 import 'package:tej_mart/providers/customer_provider.dart';
 import 'package:tej_mart/services/auth_service.dart';
@@ -18,8 +20,8 @@ import 'package:tej_mart/widgets/loader.dart';
 
 class MyBuyScreen extends StatefulWidget {
   static const routeName = '/buyScreen';
-  Map<String, dynamic> map;
-  MyBuyScreen({
+  final Map<String, dynamic> map;
+  const MyBuyScreen({
     Key? key,
     required this.map,
   }) : super(key: key);
@@ -32,7 +34,7 @@ class _MyBuyScreenState extends State<MyBuyScreen> {
   final TextEditingController _addressControlle = TextEditingController();
   final TextEditingController _mobileNoController = TextEditingController();
   final TextEditingController _balanceController = TextEditingController();
-
+  final userController = Get.put(UserController());
   bool isPlaced = false;
 
   AddressAndAmountModel? details;
@@ -158,7 +160,18 @@ class _MyBuyScreenState extends State<MyBuyScreen> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<CustomerProvider>(context, listen: false).user;
+    print(widget.map);
     return Scaffold(
+      appBar: AppBar(
+        leading: InkWell(
+          onTap: () => Navigator.pop(context),
+          child: const Icon(Icons.arrow_back_ios_new),
+        ),
+        title: Text(
+          "Checkout",
+          style: GoogleFonts.montserrat().copyWith(color: black, fontSize: 18),
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -288,12 +301,15 @@ class _MyBuyScreenState extends State<MyBuyScreen> {
                               ),
                             )
                           : GestureDetector(
-                              onTap: () {},
+                              onTap: () {
+                                showSnackBar(
+                                    context, "Functionality coming soon!");
+                              },
                               child: MyCustomButton(
                                 borderColor: white,
                                 color: white,
                                 textColor: black,
-                                name: "Add new Address",
+                                name: "Add new Address!",
                               ),
                             )
                       : SizedBox.shrink(),
@@ -323,7 +339,7 @@ class _MyBuyScreenState extends State<MyBuyScreen> {
                       ),
                       Text(
                         details != null
-                            ? "${details!.a_balance.toString()}\$"
+                            ? "\$${details!.a_balance.toString()}"
                             : "0.0",
                         style: textStyle().copyWith(color: white, fontSize: 20),
                       )
@@ -368,7 +384,7 @@ class _MyBuyScreenState extends State<MyBuyScreen> {
                         .copyWith(fontSize: 16),
                   ),
                   Text(
-                    "Grand Total:  ${widget.map['total']}\$",
+                    "Grand Total:  \$${widget.map['total']}",
                     style: textStyle().copyWith(color: white, fontSize: 16),
                   ),
                   Gap(10),
@@ -380,6 +396,7 @@ class _MyBuyScreenState extends State<MyBuyScreen> {
                             details!.address.isNotEmpty &&
                             details!.mobile_no.isNotEmpty) {
                           placeOrder(user.id, widget.map['products'], balance);
+                          userController.list.clear();
                         } else {
                           String data = "";
                           if (details!.address.isEmpty) {

@@ -8,19 +8,20 @@ import 'package:tej_mart/providers/salse_user_provider.dart';
 import 'package:tej_mart/routes.dart';
 
 void main() {
-  runApp(MultiProvider(
-    providers: [
-      ChangeNotifierProvider(create: (_) => SalesExecutiveProvider()),
-      ChangeNotifierProvider(create: (_) => CustomerProvider()),
-      ChangeNotifierProvider(create: (_) => CartProvider())
-    ],
-    child: const MyApp(),
-  ));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => SalesExecutiveProvider()),
+        ChangeNotifierProvider(create: (_) => CustomerProvider()),
+        ChangeNotifierProvider(create: (_) => CartProvider())
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {

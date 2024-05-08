@@ -22,8 +22,8 @@ class MySalesController extends GetxController {
       {required String sales_id, required BuildContext context}) async {
     List<Map<String, dynamic>>? iList = await SalesProductService()
         .getAllSalesProducts(context: context, seller_id: sales_id);
-
+    print("len i ${iList.length}");
     listOfIncomingOrders.value = iList;
-    print(listOfIncomingOrders);
+    print("len ${listOfIncomingOrders.length}");
   }
 }

@@ -4,6 +4,7 @@ import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:tej_mart/SalesExecutives/controllers/sales_home_controller.dart';
 import 'package:tej_mart/SalesExecutives/services/sales_prooduct_service.dart';
+import 'package:tej_mart/constants/constants.dart';
 
 import '../../constants/colors.dart';
 import '../../widgets/custom_button.dart';
@@ -31,6 +32,7 @@ class _MyOrderBottomState extends State<MyOrderBottom> {
         context: context, order_id: order_id, product_id: product_id);
     salesHomeController.getAllSalesProduct(
         sales_id: widget.sales_id, context: context);
+    showSnackBar(context, "Order accepted!");
   }
 
   declineOrder(String order_id, String product_id) async {
@@ -38,6 +40,7 @@ class _MyOrderBottomState extends State<MyOrderBottom> {
         context: context, order_id: order_id, product_id: product_id);
     salesHomeController.getAllSalesProduct(
         sales_id: widget.sales_id, context: context);
+    showSnackBar(context, "Order declined!");
   }
 
   @override

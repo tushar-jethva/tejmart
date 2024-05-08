@@ -46,7 +46,7 @@ class MyTrendingContainer extends StatelessWidget {
             ],
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 5.0, top: 5),
+            padding: const EdgeInsets.only(left: 10.0, top: 10),
             child: Text(
               itemName,
               maxLines: 1,
@@ -57,7 +57,7 @@ class MyTrendingContainer extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 5),
+            padding: const EdgeInsets.symmetric(horizontal: 10),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -67,7 +67,7 @@ class MyTrendingContainer extends StatelessWidget {
                       color: grey, fontWeight: FontWeight.bold, fontSize: 12),
                 ),
                 Text(
-                  "\$${price}.00",
+                  "\$${price.toStringAsFixed(2)}",
                   style: GoogleFonts.montserrat().copyWith(
                       color: priceColor,
                       fontWeight: FontWeight.bold,

@@ -117,7 +117,7 @@ class SalesProductService {
             'Content-Type': 'application/json; charset=UTF-8',
           });
 
-      print(res.body);
+      print("len body ${jsonDecode(res.body).length}");
       httpErrorHandled(
           res: res,
           context: context,

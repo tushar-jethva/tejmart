@@ -54,7 +54,7 @@ class _MyBottomCartState extends State<MyBottomCart> {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                "\$${widget.total}",
+                "\$${widget.total.toStringAsFixed(2)}",
                 style: GoogleFonts.montserrat().copyWith(
                   color: black,
                   fontWeight: FontWeight.bold,

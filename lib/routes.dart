@@ -10,6 +10,7 @@ import 'package:tej_mart/Features/order_details.dart';
 import 'package:tej_mart/Features/profile_screen.dart';
 import 'package:tej_mart/Features/sign_up.dart';
 import 'package:tej_mart/Features/signin.dart';
+import 'package:tej_mart/Features/terms_services.dart';
 import 'package:tej_mart/SalesExecutives/features/sales_additem.dart';
 import 'package:tej_mart/SalesExecutives/features/sales_bottom_bar.dart';
 import 'package:tej_mart/SalesExecutives/features/sales_details_screen.dart';
@@ -102,6 +103,10 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case MyProfileScreen.routeName:
       return MaterialPageRoute(
           builder: (_) => MyProfileScreen(), settings: routeSettings);
+    
+     case MyTermsAndPolicy.routeName:
+      return MaterialPageRoute(
+          builder: (_) => MyTermsAndPolicy(), settings: routeSettings);
 
     case MyOrderDetails.routeName:
       Map<String, dynamic> map =

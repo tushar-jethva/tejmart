@@ -1,22 +1,12 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
-import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:google_fonts/google_fonts.dart';
-import 'package:provider/provider.dart';
 import 'package:tej_mart/Features/details_screen.dart';
-
 import 'package:tej_mart/SalesExecutives/models/sales_addProduct.dart';
 import 'package:tej_mart/constants/style.dart';
 import 'package:tej_mart/controller/user_controller.dart';
-import 'package:tej_mart/providers/cart_provider.dart';
-import 'package:tej_mart/providers/customer_provider.dart';
-import 'package:tej_mart/services/cart_service.dart';
 import 'package:tej_mart/widgets/bottom_cart.dart';
-import 'package:tej_mart/widgets/bottombar.dart';
 import 'package:tej_mart/widgets/cart_item.dart';
-import 'package:tej_mart/widgets/loader.dart';
-
 import '../constants/colors.dart';
 
 class MyCartScreen extends StatefulWidget {
@@ -36,8 +26,7 @@ class _MyCartScreenState extends State<MyCartScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
-    // getAllCustomerCartProducts();
+    super.initState();
     userController.getAllCustomerCartProducts(
         user_id: widget.map['user_id']!, context: context);
   }
@@ -52,24 +41,20 @@ class _MyCartScreenState extends State<MyCartScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<CustomerProvider>(context, listen: false).user;
-    int total_items = 0;
     List<String> products = [];
 
     return Obx(() {
       if (userController.list.isNotEmpty &&
           userController.list['product'] != null) {
         double total = 0;
-        total_items = userController.list!['product']!.length;
-        for (int i = 0; i < userController.list!['product']!.length; i++) {
-          SalesAddProductModel product = userController.list!['product']![i];
+        products = [];
+        for (int i = 0; i < userController.list['product']!.length; i++) {
+          SalesAddProductModel product = userController.list['product']![i];
           products.add(product.id);
           double disPrice = product.price * (1 - (product.discount / 100.00));
-          total += disPrice * userController.list!['quantity']![i];
+          total += disPrice * userController.list['quantity']![i];
         }
-
         userController.setTotalAmount = total;
-        print("total items ${userController.totalAmount}");
       }
       return Scaffold(
         appBar: AppBar(
@@ -77,7 +62,7 @@ class _MyCartScreenState extends State<MyCartScreen> {
               onTap: () {
                 Navigator.pop(context);
               },
-              child: Icon(Icons.arrow_back_ios_new)),
+              child: const Icon(Icons.arrow_back_ios_new)),
           title: Text(
             "Cart",
             style: textStyle(),
@@ -85,7 +70,7 @@ class _MyCartScreenState extends State<MyCartScreen> {
         ),
         body: userController.list.isEmpty &&
                 userController.list['product'] == null
-            ? Center(
+            ? const Center(
                 child: Text("Please add something!"),
               )
             : Column(
@@ -96,7 +81,7 @@ class _MyCartScreenState extends State<MyCartScreen> {
                         scrollDirection: Axis.vertical,
                         itemBuilder: (context, index) {
                           SalesAddProductModel product =
-                              userController.list!['product']![index];
+                              userController.list['product']![index];
                           double discountedPrice =
                               product.price * (1 - (product.discount / 100.00));
                           return GestureDetector(
@@ -125,10 +110,14 @@ class _MyCartScreenState extends State<MyCartScreen> {
                   ),
                 ],
               ),
-        bottomNavigationBar: MyBottomCart(
-          total: userController.totalAmount.value,
-          total_items: total_items,
-          products: products,
+        bottomNavigationBar: Obx(
+          () => MyBottomCart(
+            total: userController.totalAmount.value,
+            total_items: userController.list['product'] != null
+                ? userController.list['product']!.length
+                : 0,
+            products: products,
+          ),
         ),
       );
     });

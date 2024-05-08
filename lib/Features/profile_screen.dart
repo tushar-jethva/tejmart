@@ -28,7 +28,6 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
   List<Map<String, dynamic>>? list;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       var user = Provider.of<CustomerProvider>(context, listen: false).user;
@@ -53,6 +52,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<CustomerProvider>(context, listen: false).user;
+    print("User ${user.name}");
     return Scaffold(
       appBar: AppBar(
         title: Text(
@@ -65,7 +65,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
                 Navigator.pushNamedAndRemoveUntil(
                     context, MyInitScreen.routeName, (route) => false);
               },
-              child: Icon(Icons.logout))
+              child: const Icon(Icons.logout))
         ],
       ),
       body: Column(
@@ -102,25 +102,32 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
             ),
           ),
           list != null
-              ? SizedBox(
-                  height: 200,
-                  child: ListView.builder(
-                      scrollDirection: Axis.horizontal,
-                      itemCount: list!.length,
-                      itemBuilder: (context, index) {
-                        return GestureDetector(
-                          onTap: () {
-                            Navigator.pushNamed(
-                                context, MyOrderDetails.routeName,
-                                arguments: {"products": list![index]});
-                          },
-                          child: MyOrderContainer(
-                            product: list![index],
-                          ),
-                        );
-                      }),
+              ? list!.isNotEmpty
+                  ? SizedBox(
+                      height: 200,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: list!.length,
+                          itemBuilder: (context, index) {
+                            return GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, MyOrderDetails.routeName,
+                                    arguments: {"products": list![index]});
+                              },
+                              child: MyOrderContainer(
+                                product: list![index],
+                              ),
+                            );
+                          }),
+                    )
+                  : const Padding(
+                      padding: EdgeInsets.only(top: 20.0),
+                      child: Center(child: Text("No Orders found!")),
+                    )
+              : const Center(
+                  child: CircularProgressIndicator(),
                 )
-              : SizedBox.shrink()
         ],
       ),
     );

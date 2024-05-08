@@ -2,9 +2,14 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 import 'package:tej_mart/SalesExecutives/models/sales_addProduct.dart';
+import 'package:tej_mart/controller/user_controller.dart';
+import 'package:tej_mart/providers/customer_provider.dart';
+import 'package:tej_mart/services/favouritescreen.dart';
 
 import '../constants/colors.dart';
 
@@ -22,6 +27,8 @@ class MyOneFavourite extends StatefulWidget {
 class _MyOneFavouriteState extends State<MyOneFavourite> {
   @override
   Widget build(BuildContext context) {
+    final userController = Get.put(UserController());
+    final user = Provider.of<CustomerProvider>(context, listen: false).user;
     double discountedPrice =
         widget.product.price * (1 - (widget.product.discount / 100.00));
     return Container(
@@ -132,7 +139,10 @@ class _MyOneFavouriteState extends State<MyOneFavourite> {
           Gap(5),
           GestureDetector(
             onTap: () async {
-              // deleteItem();
+              userController.removeWishListItem(
+                  context: context,
+                  productId: widget.product.id,
+                  userId: user.id);
             },
             child: Container(
               height: 40,

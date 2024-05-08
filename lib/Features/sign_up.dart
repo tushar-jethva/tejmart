@@ -1,8 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tej_mart/Features/init_screen.dart';
 import 'package:tej_mart/Features/signin.dart';
+import 'package:tej_mart/Features/terms_services.dart';
 import 'package:tej_mart/constants/colors.dart';
 import 'package:tej_mart/constants/style.dart';
 import 'package:tej_mart/services/auth_service.dart';
@@ -167,21 +170,23 @@ class _MySignUpScreenState extends State<MySignUpScreen> {
               RichText(
                 text: TextSpan(
                   text: "By signing up, you are agreeing to our ",
-                  style: GoogleFonts.montserrat().copyWith(color: black),
+                  style: GoogleFonts.montserrat()
+                      .copyWith(color: black, fontSize: 14),
                   children: [
-                    TextSpan(
-                      text: "Terms of Service ",
-                      style: GoogleFonts.montserrat(
-                          color: blue, fontWeight: FontWeight.w500),
-                    ),
-                    TextSpan(
-                      text: "and ",
-                      style: GoogleFonts.montserrat().copyWith(color: black),
-                    ),
-                    TextSpan(
-                      text: "Privacy Policy.",
-                      style: GoogleFonts.montserrat(
-                          color: blue, fontWeight: FontWeight.w500),
+                    WidgetSpan(
+                      child: InkWell(
+                        onTap: () {
+                          Navigator.pushNamed(
+                              context, MyTermsAndPolicy.routeName);
+                        },
+                        child: Text(
+                          "Terms of Service and Privacy Policy.",
+                          style: GoogleFonts.montserrat(
+                              color: blue,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 14),
+                        ),
+                      ),
                     ),
                   ],
                 ),

@@ -10,29 +10,23 @@ const orderRouter = express.Router();
 orderRouter.post("/api/placeOrder",async(req,res)=>{
     try{
         const{products,user_id,total_amount} = req.body;
-        
+        console.log(products)
         let user = await UserModel.findById(user_id);
         let b = user.a_balance - total_amount;
         let u1 = await UserModel.findByIdAndUpdate(user_id,{"a_balance":b},{new:true});
-        
         let cartproducts = await CartModel.find({"user_id":user_id});
-       
-
+        console.log(cartproducts)
         let order = new OrderModel({
             products,
             user_id,
             total_amount,
             orderAt: new Date().getTime(),
         });
-        
         order = await order.save();
-        
         let order_id = order._id.toString();
-
         for(let i=0;i<products.length;i++){
             let product = await ProductModel.findById(products[i]);
-            
-            // console.log(product['sales_id']);
+            //console.log(product['sales_id']);
             let order_seller = new OrderSellerModel({
                 order_id,
                 user_id,
@@ -40,11 +34,8 @@ orderRouter.post("/api/placeOrder",async(req,res)=>{
                 seller_id:product['sales_id'],
                 quantity_product:cartproducts[i]['quantity_product']
             });
-            
             order_seller = await order_seller.save();
         }
-
-
         await CartModel.deleteMany({"user_id":user_id});        
         res.json(order);
     }
@@ -56,15 +47,18 @@ orderRouter.post("/api/placeOrder",async(req,res)=>{
 orderRouter.get("/api/getAllUserOrders",async(req,res)=>{
     let orders = await OrderModel.find({user_id:req.query.user_id});
     let order_products = [];
-
+    console.log(orders)
+    console.log(orders.length);
     for(let i=0;i<orders.length;i++){
         let order_id = orders[i]._id.toString();
         let quantity_product = await OrderSellerModel.find({"order_id":order_id});
-        // console.log(quantity_product);
+        console.log(quantity_product);
         let product_list = [];
         for(let j=0;j<orders[i]['products'].length;j++){
-            let q1 = quantity_product[j]['quantity_product'];
-            let status = quantity_product[j]['status'];
+            // console.log(j)
+            // console.log(quantity_product[j])
+            let q1 = quantity_product[j].quantity_product;
+            let status = quantity_product[j].status;
             let product = await ProductModel.findById(orders[i]['products'][j]);
             let m = {
                 "product":product,
@@ -72,8 +66,8 @@ orderRouter.get("/api/getAllUserOrders",async(req,res)=>{
                 "status":status
             }
             product_list.push(m);
-            
         }
+        console.log(product_list)
         let map = {
             "product":product_list,
             "total_amount":orders[i]['total_amount'],
@@ -81,7 +75,7 @@ orderRouter.get("/api/getAllUserOrders",async(req,res)=>{
         }
         order_products.push(map);
     }
-
+    
     res.json(order_products);
 });
 
@@ -110,7 +104,6 @@ orderRouter.get("/api/getCompletedOrder",async(req,res)=>{
     let sellerProducts = [];
     console.log(orders)
     for(let i=0;i<orders.length;i++){
-       
             let product = await ProductModel.findById(orders[i]['product_id']);
             let map = {
                 "product":product,
@@ -126,7 +119,7 @@ orderRouter.get("/api/getCompletedOrder",async(req,res)=>{
 
 orderRouter.post("/api/mail",async(req,res)=>{
     try{
-       const{receiveremail} = req.body;
+    const{receiveremail} = req.body;
 
         let sender = nodemailer.createTransport({
             service: 'gmail',
@@ -164,26 +157,20 @@ orderRouter.post("/api/acceptOrder",async(req,res)=>{
         const{order_id,product_id} = req.body;
         const oneOrderProduct = await OrderSellerModel.findOneAndUpdate({"order_id":order_id,"product_id":product_id},{"status":1},{new:true});
         res.json(oneOrderProduct);
-
     }
     catch(e){
         res.status(500).json({error:e.message});
-
     }
 })
-
 
 orderRouter.post("/api/declineOrder",async(req,res)=>{
     try{
         const{order_id,product_id} = req.body;
-
         const oneOrderProduct = await OrderSellerModel.findOneAndUpdate({"order_id":order_id,"product_id":product_id},{"status":2},{new:true});
         res.json(oneOrderProduct);
-
     }
     catch(e){
         res.status(500).json({error:e.message});
-
     }
 })
 
