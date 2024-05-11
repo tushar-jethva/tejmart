@@ -5,6 +5,7 @@ import 'package:tej_mart/Features/invoice.dart';
 import 'package:tej_mart/Features/pdfprevies.dart';
 import 'package:tej_mart/SalesExecutives/models/sales_addProduct.dart';
 import 'package:tej_mart/constants/colors.dart';
+import 'package:tej_mart/constants/sizes.dart';
 import 'package:tej_mart/constants/style.dart';
 import 'package:tej_mart/widgets/one_order_detail_container.dart';
 
@@ -44,9 +45,20 @@ class _MyOrderDetailsState extends State<MyOrderDetails> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  "Total Items ${quantity}",
-                  style: textStyle().copyWith(color: black, fontSize: 20),
+                Row(
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.pop(context);
+                      },
+                      child: const Icon(Icons.arrow_back_ios_new),
+                    ),
+                    Gap(getWidth(0.03, context)),
+                    Text(
+                      "Total Items ${quantity}",
+                      style: textStyle().copyWith(color: black, fontSize: 20),
+                    ),
+                  ],
                 ),
                 GestureDetector(
                     onTap: () {

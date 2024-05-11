@@ -68,10 +68,9 @@ class _MyCartScreenState extends State<MyCartScreen> {
             style: textStyle(),
           ),
         ),
-        body: userController.list.isEmpty &&
-                userController.list['product'] == null
+        body: userController.list['product']!.isEmpty
             ? const Center(
-                child: Text("Please add something!"),
+                child: Text("Your cart is empty!"),
               )
             : Column(
                 children: [

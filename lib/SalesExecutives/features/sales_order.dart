@@ -30,14 +30,13 @@ class _MySalesOrderScreenState extends State<MySalesOrderScreen> {
     });
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Obx(
       () => Scaffold(
         body: salesHomeController.listOfIncomingOrders.isEmpty
             ? const Center(
-                child: Text("No items"),
+                child: Text("No Orders found!"),
               )
             : GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -49,7 +48,7 @@ class _MySalesOrderScreenState extends State<MySalesOrderScreen> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (_) => MySalesDetailsScreen(
+                                builder: (_) => MySalesDetailssScreen(
                                       produt: salesHomeController
                                               .listOfIncomingOrders[index]
                                           ['product'],

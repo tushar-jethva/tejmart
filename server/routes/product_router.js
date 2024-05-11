@@ -87,6 +87,16 @@ productRouter.get('/api/getAllSystemProducts',async(req,res)=>{
     }
 })
 
+productRouter.get('/api/searchProducts',async(req,res)=>{
+    try{
+        const products = await ProductModel.find({name:{$regex:req.query.name,$options:'i'}});
+        res.json(products);
+    }
+    catch(e){
+        return res.status(500).json({error:e.message});
+    }
+})
+
 
 
 module.exports = productRouter;

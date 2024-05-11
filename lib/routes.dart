@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tej_mart/Features/all_orders_screen.dart';
 import 'package:tej_mart/Features/buyscree.dart';
 import 'package:tej_mart/Features/cartscreen.dart';
 import 'package:tej_mart/Features/category_items.dart';
@@ -8,10 +9,12 @@ import 'package:tej_mart/Features/homescreen.dart';
 import 'package:tej_mart/Features/init_screen.dart';
 import 'package:tej_mart/Features/order_details.dart';
 import 'package:tej_mart/Features/profile_screen.dart';
+import 'package:tej_mart/Features/search_screen.dart';
 import 'package:tej_mart/Features/sign_up.dart';
 import 'package:tej_mart/Features/signin.dart';
 import 'package:tej_mart/Features/terms_services.dart';
 import 'package:tej_mart/SalesExecutives/features/sales_additem.dart';
+import 'package:tej_mart/SalesExecutives/features/sales_all_orders_screen.dart';
 import 'package:tej_mart/SalesExecutives/features/sales_bottom_bar.dart';
 import 'package:tej_mart/SalesExecutives/features/sales_details_screen.dart';
 import 'package:tej_mart/SalesExecutives/features/sales_sign_in.dart';
@@ -103,10 +106,32 @@ Route<dynamic> generateRoute(RouteSettings routeSettings) {
     case MyProfileScreen.routeName:
       return MaterialPageRoute(
           builder: (_) => MyProfileScreen(), settings: routeSettings);
-    
-     case MyTermsAndPolicy.routeName:
+
+    case MyTermsAndPolicy.routeName:
       return MaterialPageRoute(
           builder: (_) => MyTermsAndPolicy(), settings: routeSettings);
+
+    case MySearchScreen.routeName:
+      return MaterialPageRoute(
+          builder: (_) => MySearchScreen(), settings: routeSettings);
+
+    case MyAllOrdersScreen.routeName:
+      List<Map<String, dynamic>> list =
+          routeSettings.arguments as List<Map<String, dynamic>>;
+      return MaterialPageRoute(
+          builder: (_) => MyAllOrdersScreen(
+                list: list,
+              ),
+          settings: routeSettings);
+
+    case MySalesAllOrdersScreen.routeName:
+      List<Map<String, dynamic>> list =
+          routeSettings.arguments as List<Map<String, dynamic>>;
+      return MaterialPageRoute(
+          builder: (_) => MySalesAllOrdersScreen(
+                list: list,
+              ),
+          settings: routeSettings);
 
     case MyOrderDetails.routeName:
       Map<String, dynamic> map =

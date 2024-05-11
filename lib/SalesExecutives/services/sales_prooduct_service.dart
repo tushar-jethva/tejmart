@@ -141,7 +141,7 @@ class SalesProductService {
     return list;
   }
 
-  void acceptOrder(
+  Future<void> acceptOrder(
       {required BuildContext context,
       required String order_id,
       required String product_id}) async {
@@ -163,7 +163,7 @@ class SalesProductService {
     }
   }
 
-  void declineOrder(
+  Future<void> declineOrder(
       {required BuildContext context,
       required String order_id,
       required String product_id}) async {

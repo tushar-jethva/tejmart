@@ -2,11 +2,14 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
+import 'package:tej_mart/Features/all_orders_screen.dart';
+import 'package:tej_mart/Features/homescreen.dart';
 import 'package:tej_mart/Features/init_screen.dart';
 import 'package:tej_mart/Features/order_details.dart';
 import 'package:tej_mart/SalesExecutives/models/sales_addProduct.dart';
 import 'package:tej_mart/constants/colors.dart';
 import 'package:tej_mart/constants/images_link.dart';
+import 'package:tej_mart/constants/sizes.dart';
 import 'package:tej_mart/constants/style.dart';
 import 'package:tej_mart/services/auth_service.dart';
 import 'package:tej_mart/services/order_service.dart';
@@ -89,25 +92,27 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
               )
             ],
           ),
+          Gap(getHeight(0.05, context)),
           Padding(
-            padding: const EdgeInsets.only(
-              top: 30,
-              left: 15,
-              right: 15,
-            ),
-            child: Text(
-              "My Orders",
-              style: textStyle().copyWith(
-                  color: black, fontWeight: FontWeight.bold, fontSize: 20),
+            padding: EdgeInsets.symmetric(horizontal: getWidth(0.03, context)),
+            child: MyHeaderText(
+              leftText: "My Orders",
+              rightText: "See all",
+              fontSize: 20,
+              onRightTap: () {
+                Navigator.pushNamed(context, MyAllOrdersScreen.routeName,
+                    arguments: list);
+              },
             ),
           ),
+          Gap(getHeight(0.01, context)),
           list != null
               ? list!.isNotEmpty
                   ? SizedBox(
                       height: 200,
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,
-                          itemCount: list!.length,
+                          itemCount: list!.length > 3 ? 3 : list!.length,
                           itemBuilder: (context, index) {
                             return GestureDetector(
                               onTap: () {

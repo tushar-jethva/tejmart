@@ -28,7 +28,7 @@ class _MyOrderBottomState extends State<MyOrderBottom> {
   final salesHomeController = Get.put(MySalesController());
 
   acceptOrder(String order_id, String product_id) async {
-    SalesProductService().acceptOrder(
+    await SalesProductService().acceptOrder(
         context: context, order_id: order_id, product_id: product_id);
     salesHomeController.getAllSalesProduct(
         sales_id: widget.sales_id, context: context);
@@ -36,7 +36,7 @@ class _MyOrderBottomState extends State<MyOrderBottom> {
   }
 
   declineOrder(String order_id, String product_id) async {
-    SalesProductService().declineOrder(
+    await SalesProductService().declineOrder(
         context: context, order_id: order_id, product_id: product_id);
     salesHomeController.getAllSalesProduct(
         sales_id: widget.sales_id, context: context);

@@ -14,11 +14,11 @@ import 'package:tej_mart/widgets/custom_button.dart';
 import '../../constants/colors.dart';
 import '../models/sales_addProduct.dart';
 
-class MySalesDetailsScreen extends StatefulWidget {
+class MySalesDetailssScreen extends StatefulWidget {
   SalesAddProductModel produt;
   Map<String, dynamic> map;
   bool isCompleted;
-  MySalesDetailsScreen({
+  MySalesDetailssScreen({
     Key? key,
     required this.produt,
     required this.map,
@@ -26,10 +26,10 @@ class MySalesDetailsScreen extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  State<MySalesDetailsScreen> createState() => _MySalesDetailsScreenState();
+  State<MySalesDetailssScreen> createState() => _MySalesDetailsScreenState();
 }
 
-class _MySalesDetailsScreenState extends State<MySalesDetailsScreen> {
+class _MySalesDetailsScreenState extends State<MySalesDetailssScreen> {
   late final PageController pageController;
   late Timer timer;
   int currIndex = 0;

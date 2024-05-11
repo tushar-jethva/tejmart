@@ -2,8 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:provider/provider.dart';
+import 'package:tej_mart/Features/all_orders_screen.dart';
+import 'package:tej_mart/Features/homescreen.dart';
 import 'package:tej_mart/Features/init_screen.dart';
+import 'package:tej_mart/SalesExecutives/features/sales_all_orders_screen.dart';
 import 'package:tej_mart/SalesExecutives/features/sales_details.dart';
+import 'package:tej_mart/constants/sizes.dart';
 import 'package:tej_mart/constants/style.dart';
 import 'package:tej_mart/providers/salse_user_provider.dart';
 
@@ -79,34 +83,36 @@ class _MySalesProfileScreenState extends State<MySalesProfileScreen> {
               )
             ],
           ),
+          Gap(getHeight(0.03, context)),
           Padding(
-            padding: const EdgeInsets.only(
-              top: 30,
-              left: 15,
-              right: 15,
-            ),
-            child: Text(
-              "Completed Orders",
-              style: textStyle().copyWith(
-                  color: black, fontWeight: FontWeight.bold, fontSize: 20),
+            padding: EdgeInsets.symmetric(horizontal: getWidth(0.03, context)),
+            child: MyHeaderText(
+              leftText: "Completed Orders",
+              rightText: "See all",
+              fontSize: 20,
+              onRightTap: () {
+                Navigator.pushNamed(context, MySalesAllOrdersScreen.routeName,
+                    arguments: list);
+              },
             ),
           ),
+          Gap(getHeight(0.01, context)),
           list == null
               ? Center(
                   child: MyLoader(color: indigo),
                 )
-              : Container(
+              : SizedBox(
                   height: 200,
                   child: ListView.builder(
                       scrollDirection: Axis.horizontal,
-                      itemCount: list!.length,
+                      itemCount: list!.length > 3 ? 3 : list!.length,
                       itemBuilder: ((context, index) {
                         return GestureDetector(
                             onTap: () {
                               Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (_) => MySalesDetailsScreen(
+                                      builder: (_) => MySalesDetailssScreen(
                                             produt: list![index]['product'],
                                             map: list![index],
                                             isCompleted: true,
