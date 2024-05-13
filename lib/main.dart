@@ -7,6 +7,15 @@ import 'package:tej_mart/providers/customer_provider.dart';
 import 'package:tej_mart/providers/salse_user_provider.dart';
 import 'package:tej_mart/routes.dart';
 
+void main() { 
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => SalesExecutiveProvider()),
+      ChangeNotifierProvider(create: (_) => CustomerProvider()),
+      ChangeNotifierProvider(create: (_) => CartProvider())
+    ],
+    child: const MyApp(),
+  ));
 void main() {
   runApp(
     MultiProvider(
