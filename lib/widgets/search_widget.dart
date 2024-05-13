@@ -1,76 +1,43 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-import 'package:tej_mart/constants/colors.dart';
-import 'package:tej_mart/constants/constants.dart';
-import 'package:tej_mart/controller/user_controller.dart';
-import 'package:tej_mart/providers/cart_provider.dart';
-import 'package:tej_mart/services/cart_service.dart';
-import '../constants/style.dart';
 
-class MyOneCartItem extends StatefulWidget {
-  final String user_id;
-  final String id;
-  final String itemName;
-  final String shopName;
-  final double disPrice;
-  final int oriPrice;
-  final int discount;
-  final String image;
-  final int quantity;
-  final Color color;
-  final bool isQuantityRequired;
-  const MyOneCartItem(
-      {Key? key,
-      required this.user_id,
-      required this.itemName,
-      required this.shopName,
-      required this.disPrice,
-      required this.oriPrice,
-      required this.discount,
-      required this.image,
-      required this.color,
-      required this.id,
-      required this.quantity,
-      this.isQuantityRequired = true})
-      : super(key: key);
+import 'package:tej_mart/SalesExecutives/models/sales_addProduct.dart';
+import 'package:tej_mart/controller/user_controller.dart';
+import 'package:tej_mart/providers/customer_provider.dart';
+import 'package:tej_mart/services/favouritescreen.dart';
+
+import '../constants/colors.dart';
+
+class MyOneSearch extends StatefulWidget {
+  final SalesAddProductModel product;
+  const MyOneSearch({
+    Key? key,
+    required this.product,
+  }) : super(key: key);
 
   @override
-  State<MyOneCartItem> createState() => _MyOneCartItemState();
+  State<MyOneSearch> createState() => _MyOneFavouriteState();
 }
 
-class _MyOneCartItemState extends State<MyOneCartItem> {
-  final userController = Get.put(UserController());
-
-  bool itemDelete = false;
-  deleteItem() async {
-    await CartService().deleteFromCart(
-      context: context,
-      product_id: widget.id,
-      onSuccess: () {
-        print("Delete");
-        userController.getAllCustomerCartProducts(
-            user_id: widget.user_id, context: context);
-        showSnackBar(context, "Deleted");
-      },
-    );
-  }
-
+class _MyOneFavouriteState extends State<MyOneSearch> {
   @override
   Widget build(BuildContext context) {
-    int number = widget.quantity;
+    final userController = Get.put(UserController());
+    final user = Provider.of<CustomerProvider>(context, listen: false).user;
+    double discountedPrice =
+        widget.product.price * (1 - (widget.product.discount / 100.00));
     return Container(
       height: 130,
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 12),
       margin: const EdgeInsets.only(left: 15, right: 15, bottom: 20),
       decoration: BoxDecoration(
-        color: widget.color,
+        color: lightGrey,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Row(
@@ -82,7 +49,7 @@ class _MyOneCartItemState extends State<MyOneCartItem> {
               borderRadius: BorderRadius.circular(10),
               //image
               image: DecorationImage(
-                  image: CachedNetworkImageProvider(widget.image),
+                  image: CachedNetworkImageProvider(widget.product.images[0]),
                   fit: BoxFit.cover),
             ),
           ),
@@ -95,7 +62,7 @@ class _MyOneCartItemState extends State<MyOneCartItem> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.itemName,
+                    widget.product.name,
                     maxLines: 2,
                     style: GoogleFonts.montserrat().copyWith(
                         color: black,
@@ -106,7 +73,7 @@ class _MyOneCartItemState extends State<MyOneCartItem> {
                   Row(
                     children: [
                       Text(
-                        "\$${widget.disPrice}  ",
+                        "\$${discountedPrice}  ",
                         style: GoogleFonts.montserrat().copyWith(
                             color: black,
                             fontWeight: FontWeight.bold,
@@ -114,7 +81,7 @@ class _MyOneCartItemState extends State<MyOneCartItem> {
                             fontSize: 15),
                       ),
                       Text(
-                        "\$${widget.oriPrice}",
+                        "\$${widget.product.price}",
                         style: GoogleFonts.montserrat().copyWith(
                             color: grey,
                             fontWeight: FontWeight.bold,
@@ -124,7 +91,7 @@ class _MyOneCartItemState extends State<MyOneCartItem> {
                             fontSize: 15),
                       ),
                       Text(
-                        " ${widget.discount}%",
+                        " ${widget.product.discount}%",
                         style: GoogleFonts.montserrat().copyWith(
                             color: Colors.green,
                             fontWeight: FontWeight.bold,
@@ -154,7 +121,7 @@ class _MyOneCartItemState extends State<MyOneCartItem> {
                         ),
                       ),
                       Text(
-                        "${widget.shopName}",
+                        "${widget.product.shop_name}",
                         maxLines: 1,
                         style: GoogleFonts.montserrat().copyWith(
                           color: Colors.cyan,
@@ -165,33 +132,33 @@ class _MyOneCartItemState extends State<MyOneCartItem> {
                       ),
                     ],
                   ),
-                  widget.isQuantityRequired
-                      ? Text("x${widget.quantity}")
-                      : SizedBox.shrink()
                 ],
               ),
             ),
           ),
-          Gap(5),
-          GestureDetector(
-            onTap: () {
-              deleteItem();
-            },
-            child: Container(
-              height: 40,
-              width: 40,
-              decoration: BoxDecoration(
-                  color: Color.fromARGB(53, 242, 15, 38),
-                  borderRadius: BorderRadius.circular(
-                    10,
-                  )),
-              child: Icon(
-                Icons.delete,
-                color: red,
-                size: 28,
-              ),
-            ),
-          )
+          // Gap(5),
+          // GestureDetector(
+          //   onTap: () async {
+          //     userController.removeWishListItem(
+          //         context: context,
+          //         productId: widget.product.id,
+          //         userId: user.id);
+          //   },
+          //   child: Container(
+          //     height: 40,
+          //     width: 40,
+          //     decoration: BoxDecoration(
+          //         color: Color.fromARGB(53, 242, 15, 38),
+          //         borderRadius: BorderRadius.circular(
+          //           10,
+          //         )),
+          //     child: Icon(
+          //       Icons.delete,
+          //       color: red,
+          //       size: 28,
+          //     ),
+          //   ),
+          // )
         ],
       ),
     );

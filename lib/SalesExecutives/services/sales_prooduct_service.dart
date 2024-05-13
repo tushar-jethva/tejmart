@@ -117,7 +117,7 @@ class SalesProductService {
             'Content-Type': 'application/json; charset=UTF-8',
           });
 
-      print(res.body);
+      print("len body ${jsonDecode(res.body).length}");
       httpErrorHandled(
           res: res,
           context: context,
@@ -141,7 +141,7 @@ class SalesProductService {
     return list;
   }
 
-  void acceptOrder(
+  Future<void> acceptOrder(
       {required BuildContext context,
       required String order_id,
       required String product_id}) async {
@@ -163,7 +163,7 @@ class SalesProductService {
     }
   }
 
-  void declineOrder(
+  Future<void> declineOrder(
       {required BuildContext context,
       required String order_id,
       required String product_id}) async {

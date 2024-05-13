@@ -4,7 +4,6 @@ import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:tej_mart/Features/details_screen.dart';
 import 'package:tej_mart/SalesExecutives/controllers/sales_home_controller.dart';
-
 import 'package:tej_mart/SalesExecutives/features/sales_additem.dart';
 import 'package:tej_mart/SalesExecutives/features/sales_details_screen.dart';
 import 'package:tej_mart/SalesExecutives/models/sales_addProduct.dart';
@@ -27,13 +26,14 @@ class MySalesHomeScreen extends StatefulWidget {
 }
 
 class _MySalesHomeScreenState extends State<MySalesHomeScreen> {
-  final salesHomeController = Get.put(MySalesHomeController());
+  final salesHomeController = Get.put(MySalesController());
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
     // getAllProducts();
-    salesHomeController.getAllProducts(sales_id: widget.sales_id, context: context);
+    salesHomeController.getAllProducts(
+        sales_id: widget.sales_id, context: context);
   }
 
   // List<SalesAddProductModel>? list;
@@ -47,44 +47,47 @@ class _MySalesHomeScreenState extends State<MySalesHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: salesHomeController.list.isEmpty
-          ? MyLoader(color: indigo)
-          :GridView.builder(
-                  itemCount: salesHomeController.list.length,
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2),
-                  itemBuilder: ((context, index) {
-                    return Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(
-                              context, MySalesDetailsScreen.routeName,
-                              arguments: {"product": salesHomeController.list[index]});
-                        },
-                        child: MyTrendingContainer(
-                          itemName: salesHomeController.list[index].name,
-                          forName: salesHomeController.list[index].category,
-                          price: salesHomeController.list[index].price,
-                          url: salesHomeController.list[index].images[0],
-                        ),
+    return Obx(
+      () => Scaffold(
+        body: salesHomeController.list.isEmpty
+            ? MyLoader(color: indigo)
+            : GridView.builder(
+                itemCount: salesHomeController.list.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2),
+                itemBuilder: ((context, index) {
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.pushNamed(
+                            context, MySalesDetailsScreen.routeName,
+                            arguments: {
+                              "product": salesHomeController.list[index]
+                            });
+                      },
+                      child: MyTrendingContainer(
+                        itemName: salesHomeController.list[index].name,
+                        forName: salesHomeController.list[index].category,
+                        price: salesHomeController.list[index].price,
+                        url: salesHomeController.list[index].images[0],
                       ),
-                    );
-                  })),
-            
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(
-            context,
-            MySalesAddProductScreen.routeName,
-          );
-        },
-        child: Icon(
-          Icons.add,
-          color: white,
+                    ),
+                  );
+                })),
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Navigator.pushNamed(
+              context,
+              MySalesAddProductScreen.routeName,
+            );
+          },
+          child: Icon(
+            Icons.add,
+            color: white,
+          ),
+          backgroundColor: indigo,
         ),
-        backgroundColor: indigo,
       ),
     );
   }

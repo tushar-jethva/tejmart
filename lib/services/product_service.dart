@@ -1,6 +1,7 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:get/get.dart';
 import 'package:tej_mart/SalesExecutives/models/sales_addProduct.dart';
 import 'package:tej_mart/constants/constants.dart';
 import 'package:http/http.dart' as http;
@@ -56,6 +57,26 @@ class CustomerProductService {
           });
     } catch (e) {
       showSnackBar(context, e.toString());
+    }
+    return list;
+  }
+
+  Future<List<SalesAddProductModel>> searchProducts(
+      {required String query}) async {
+    List<SalesAddProductModel> list = [];
+    try {
+      http.Response res = await http.get(
+          Uri.parse("$url/api/searchProducts?name=$query"),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8'
+          });
+
+      print(res.body);
+      for (int i = 0; i < jsonDecode(res.body).length; i++) {
+        list.add(SalesAddProductModel.fromMap(jsonDecode(res.body)[i]));
+      }
+    } catch (e) {
+      Get.snackbar("Search", e.toString());
     }
     return list;
   }

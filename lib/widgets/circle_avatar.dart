@@ -3,6 +3,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tej_mart/constants/colors.dart';
+import 'package:tej_mart/constants/sizes.dart';
 
 class MyCircleAvatar extends StatelessWidget {
   final String url;
@@ -11,7 +12,8 @@ class MyCircleAvatar extends StatelessWidget {
   const MyCircleAvatar({
     Key? key,
     required this.url,
-    required this.name, required this.fun,
+    required this.name,
+    required this.fun,
   }) : super(key: key);
 
   @override
@@ -24,7 +26,7 @@ class MyCircleAvatar extends StatelessWidget {
             backgroundImage: CachedNetworkImageProvider(
               url,
             ),
-            radius: 30,
+            radius: getHeight(0.035, context),
             backgroundColor: grey,
           ),
           Text(

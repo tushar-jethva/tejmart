@@ -30,7 +30,6 @@ wishListRouter.post("/api/addToWishlist",async(req,res)=>{
 
 wishListRouter.get("/api/getWishListProducts",async(req,res)=>{
     try{
-        
         let products = await WishListModel.find({"user_id":req.query.user_id});
         console.log(products);
         let wishListProducts = [];
@@ -47,5 +46,16 @@ wishListRouter.get("/api/getWishListProducts",async(req,res)=>{
         res.status(500).json({error:e.message})
     }
 });
+
+wishListRouter.post("/api/deleteWishListProducts",async(req,res)=>{
+    try{
+        const{user_id,product_id} = req.body;
+        await WishListModel.findOneAndDelete({ user_id, product_id })
+        res.json({"message":"product is removed from wishlist"});
+    }
+    catch(e){
+        res.status(500).json({error:e.message})
+    }
+})
 
 module.exports = wishListRouter;

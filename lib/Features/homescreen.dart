@@ -1,21 +1,23 @@
 import 'dart:async';
-import 'package:cached_network_image/cached_network_image.dart';
-import 'package:fluentui_icons/fluentui_icons.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:tej_mart/Features/cartscreen.dart';
 import 'package:tej_mart/Features/category_items.dart';
+import 'package:tej_mart/Features/search_screen.dart';
 import 'package:tej_mart/SalesExecutives/models/sales_addProduct.dart';
 import 'package:tej_mart/constants/colors.dart';
 import 'package:tej_mart/constants/images_link.dart';
+import 'package:tej_mart/constants/sizes.dart';
+import 'package:tej_mart/controller/user_controller.dart';
 import 'package:tej_mart/providers/customer_provider.dart';
 import 'package:tej_mart/services/product_service.dart';
-import 'package:tej_mart/widgets/bottom_dots.dart';
-import 'package:tej_mart/widgets/bottombar.dart';
-import 'package:tej_mart/widgets/category_contaier.dart';
 import 'package:tej_mart/widgets/circle_avatar.dart';
+import 'package:tej_mart/widgets/cutsom_textfield.dart';
 import 'package:tej_mart/widgets/one_carousel.dart';
 import 'package:tej_mart/widgets/trending_container.dart';
 
@@ -43,9 +45,9 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
     // TODO: implement initState
     super.initState();
     pageController = PageController(initialPage: 0);
-    timer = Timer.periodic(Duration(seconds: 2), (timer) {
+    timer = Timer.periodic(const Duration(seconds: 2), (timer) {
       pageController.animateToPage(currIndex % photos.length,
-          duration: Duration(seconds: 2), curve: Curves.fastOutSlowIn);
+          duration: const Duration(seconds: 2), curve: Curves.fastOutSlowIn);
       currIndex++;
     });
   }
@@ -55,6 +57,29 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
         await CustomerProductService().getAllSystemProducts(context: context);
     setState(() {});
   }
+
+  List<Map<String, String>> categories = [
+    {
+      "title": "Men",
+      "url": men,
+    },
+    {
+      "title": "Women",
+      "url": women,
+    },
+    {
+      "title": "Kids",
+      "url": kid,
+    },
+    {
+      "title": "Footwear",
+      "url": footwear,
+    },
+    {
+      "title": "Beauty",
+      "url": beauty,
+    },
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -70,12 +95,17 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Icon(
-                    Icons.search,
-                    size: 25,
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.pushNamed(context, MySearchScreen.routeName);
+                    },
+                    child: Icon(
+                      Icons.search,
+                      size: 25,
+                    ),
                   ),
                   Text(
-                    'TejFashion',
+                    'TezzFashion',
                     style: GoogleFonts.montserrat().copyWith(
                         color: indigo,
                         fontSize: 17,
@@ -86,7 +116,7 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
                       Navigator.pushNamed(context, MyCartScreen.routeName,
                           arguments: {'user_id': cust.id});
                     },
-                    child: Icon(
+                    child: const Icon(
                       Icons.shopping_bag_rounded,
                       size: 27,
                     ),
@@ -94,7 +124,7 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
                 ],
               ),
             ),
-            Gap(20),
+            const Gap(20),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 30.0),
               child: Text(
@@ -103,56 +133,30 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
                     color: black, fontWeight: FontWeight.w900, fontSize: 22),
               ),
             ),
-            Gap(20),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  MyCircleAvatar(
-                    url: women,
-                    name: "Women",
-                    fun: () {
-                      Navigator.pushNamed(context, MyCategoryList.routeName,
-                          arguments: {"name": "Women"});
-                    },
-                  ),
-                  MyCircleAvatar(
-                    url: men,
-                    name: "Men",
-                    fun: () {
-                      Navigator.pushNamed(context, MyCategoryList.routeName,
-                          arguments: {"name": "Men"});
-                    },
-                  ),
-                  MyCircleAvatar(
-                    url: kid,
-                    name: "Kids",
-                    fun: () {
-                      Navigator.pushNamed(context, MyCategoryList.routeName,
-                          arguments: {"name": "Kids"});
-                    },
-                  ),
-                  MyCircleAvatar(
-                    url: footwear,
-                    name: "Footwear",
-                    fun: () {
-                      Navigator.pushNamed(context, MyCategoryList.routeName,
-                          arguments: {"name": "Footwear"});
-                    },
-                  ),
-                  MyCircleAvatar(
-                    url: beauty,
-                    name: "Beauty",
-                    fun: () {
-                      Navigator.pushNamed(context, MyCategoryList.routeName,
-                          arguments: {"name": "Beauty"});
-                    },
-                  ),
-                ],
-              ),
+            const Gap(20),
+            SizedBox(
+              height: getHeight(0.12, context),
+              child: ListView.builder(
+                  scrollDirection: Axis.horizontal,
+                  itemCount: categories.length,
+                  itemBuilder: ((context, index) {
+                    return SizedBox(
+                      width: getWidth(0.22, context),
+                      child: MyCircleAvatar(
+                        url: categories[index]['url']!,
+                        name: categories[index]['title']!,
+                        fun: () {
+                          print("cat ${categories[index]['title']}");
+                          Navigator.pushNamed(context, MyCategoryList.routeName,
+                              arguments: {
+                                "name": categories[index]['title'].toString()
+                              });
+                        },
+                      ),
+                    );
+                  })),
             ),
-            Gap(10),
+            const Gap(10),
             SizedBox(
               height: 200,
               width: double.infinity,
@@ -190,70 +194,94 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
             ),
             Gap(20),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 30),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Trending this week",
-                    style: GoogleFonts.montserrat().copyWith(
-                        color: black,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15),
-                  ),
-                  Text(
-                    "SeeAll",
-                    style: GoogleFonts.montserrat().copyWith(
-                        color: indigo,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 15),
-                  )
-                ],
+              padding:
+                  EdgeInsets.symmetric(horizontal: getWidth(0.05, context)),
+              child: MyHeaderText(
+                leftText: "Trending this week",
+                rightText: "See all",
+                fontSize: 15,
+                onRightTap: () {},
               ),
             ),
             const Gap(20),
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                MyTrendingContainer(
-                  itemName: "Suit",
-                  price: 100,
-                  forName: "Men",
-                  url:
-                      "https://img.freepik.com/free-vector/flat-spring-social-media-post-template_23-2149291888.jpg?w=900&t=st=1702316337~exp=1702316937~hmac=9816a124f21c48f10ba02e7a1d2b3ba77481a2ff47c5ac1293f17881fa4249c7",
-                ),
-                MyTrendingContainer(
-                  itemName: "Suit",
-                  forName: "Man",
-                  price: 50,
-                  url:
-                      "https://img.freepik.com/free-vector/flat-spring-social-media-post-template_23-2149291888.jpg?w=900&t=st=1702316337~exp=1702316937~hmac=9816a124f21c48f10ba02e7a1d2b3ba77481a2ff47c5ac1293f17881fa4249c7",
-                ),
-              ],
-            ),
-            const Gap(20),
-            const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                MyTrendingContainer(
-                  itemName: "Suit",
-                  forName: "Man",
-                  price: 50,
-                  url:
-                      "https://img.freepik.com/free-vector/flat-spring-social-media-post-template_23-2149291888.jpg?w=900&t=st=1702316337~exp=1702316937~hmac=9816a124f21c48f10ba02e7a1d2b3ba77481a2ff47c5ac1293f17881fa4249c7",
-                ),
-                MyTrendingContainer(
-                  itemName: "Suit",
-                  forName: "Man",
-                  price: 50,
-                  url:
-                      "https://img.freepik.com/free-vector/flat-spring-social-media-post-template_23-2149291888.jpg?w=900&t=st=1702316337~exp=1702316937~hmac=9816a124f21c48f10ba02e7a1d2b3ba77481a2ff47c5ac1293f17881fa4249c7",
-                ),
-              ],
-            ),
+
+            // const Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //   children: [
+            //     MyTrendingContainer(
+            //       itemName: "Suit",
+            //       price: 100,
+            //       forName: "Men",
+            //       url:
+            //           "https://img.freepik.com/free-vector/flat-spring-social-media-post-template_23-2149291888.jpg?w=900&t=st=1702316337~exp=1702316937~hmac=9816a124f21c48f10ba02e7a1d2b3ba77481a2ff47c5ac1293f17881fa4249c7",
+            //     ),
+            //     MyTrendingContainer(
+            //       itemName: "Suit",
+            //       forName: "Man",
+            //       price: 50,
+            //       url:
+            //           "https://img.freepik.com/free-vector/flat-spring-social-media-post-template_23-2149291888.jpg?w=900&t=st=1702316337~exp=1702316937~hmac=9816a124f21c48f10ba02e7a1d2b3ba77481a2ff47c5ac1293f17881fa4249c7",
+            //     ),
+            //   ],
+            // ),
+            // const Gap(20),
+            // const Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            //   children: [
+            //     MyTrendingContainer(
+            //       itemName: "Suit",
+            //       forName: "Man",
+            //       price: 50,
+            //       url:
+            //           "https://img.freepik.com/free-vector/flat-spring-social-media-post-template_23-2149291888.jpg?w=900&t=st=1702316337~exp=1702316937~hmac=9816a124f21c48f10ba02e7a1d2b3ba77481a2ff47c5ac1293f17881fa4249c7",
+            //     ),
+            //     MyTrendingContainer(
+            //       itemName: "Suit",
+            //       forName: "Man",
+            //       price: 50,
+            //       url:
+            //           "https://img.freepik.com/free-vector/flat-spring-social-media-post-template_23-2149291888.jpg?w=900&t=st=1702316337~exp=1702316937~hmac=9816a124f21c48f10ba02e7a1d2b3ba77481a2ff47c5ac1293f17881fa4249c7",
+            //     ),
+            //   ],
+            // ),
           ],
         ),
       ),
+    );
+  }
+}
+
+class MyHeaderText extends StatelessWidget {
+  final String leftText;
+  final String rightText;
+  final double fontSize;
+  final VoidCallback onRightTap;
+  const MyHeaderText(
+      {super.key,
+      required this.leftText,
+      required this.rightText,
+      required this.fontSize,
+      required this.onRightTap});
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          leftText,
+          style: GoogleFonts.montserrat().copyWith(
+              color: black, fontWeight: FontWeight.bold, fontSize: fontSize),
+        ),
+        GestureDetector(
+          onTap: onRightTap,
+          child: Text(
+            rightText,
+            style: GoogleFonts.montserrat().copyWith(
+                color: indigo, fontWeight: FontWeight.bold, fontSize: 15),
+          ),
+        )
+      ],
     );
   }
 }

@@ -1,6 +1,4 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'dart:async';
-
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
@@ -10,14 +8,11 @@ import 'package:provider/provider.dart';
 import 'package:tej_mart/SalesExecutives/models/sales_addProduct.dart';
 import 'package:tej_mart/constants/style.dart';
 import 'package:tej_mart/providers/customer_provider.dart';
-import 'package:tej_mart/services/cart_service.dart';
 import 'package:tej_mart/widgets/addToBagButton.dart';
-import 'package:tej_mart/widgets/quantity.dart';
-
 import 'package:tej_mart/widgets/search_bar.dart';
-
 import '../constants/colors.dart';
 
+// ignore: must_be_immutable
 class MyDetailsScreen extends StatefulWidget {
   static const routeName = "/detailScreen";
   Map<String, dynamic> map;
@@ -51,9 +46,6 @@ class _MyDetailsScreenState extends State<MyDetailsScreen> {
     });
   }
 
-
-  
-
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<CustomerProvider>(context, listen: false).user;
@@ -65,7 +57,7 @@ class _MyDetailsScreenState extends State<MyDetailsScreen> {
             onTap: () {
               Navigator.pop(context);
             },
-            child: Icon(Icons.arrow_back_ios_new)),
+            child: const Icon(Icons.arrow_back_ios_new)),
         title: MySearchBar(name: widget.map['name']),
 
         // flexibleSpace: MySearchBar(name: widget.map['name']!),
@@ -211,8 +203,8 @@ class _MyDetailsScreenState extends State<MyDetailsScreen> {
                               if (number > 1) {
                                 number--;
                                 setState(() {});
-                                CartService().decrementQuantity(
-                                    context: context, product_id: object.id);
+                                // CartService().decrementQuantity(
+                                //     context: context, product_id: object.id);
                               }
                             },
                             child: Icon(
@@ -227,8 +219,8 @@ class _MyDetailsScreenState extends State<MyDetailsScreen> {
                             onTap: () {
                               if (number < 6) number++;
                               setState(() {});
-                              CartService().incrementQuantity(
-                                  context: context, product_id: object.id);
+                              // CartService().incrementQuantity(
+                              //     context: context, product_id: object.id);
                             },
                             child: Icon(
                               FluentSystemIcons.ic_fluent_add_regular,
@@ -245,7 +237,8 @@ class _MyDetailsScreenState extends State<MyDetailsScreen> {
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 10),
-         child: MyAddToBagButton(product_id: object.id,user_id: user.id,quantity_product: number),
+        child: MyAddToBagButton(
+            product_id: object.id, user_id: user.id, quantity_product: number),
       ),
     );
   }

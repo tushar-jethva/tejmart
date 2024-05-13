@@ -13,7 +13,7 @@ class CustomerProvider with ChangeNotifier {
       a_balance: 0,
       token: "",
       imageUrl: "",
-     );
+    );
 
   UserModel get user => _user;
 
@@ -21,6 +21,5 @@ class CustomerProvider with ChangeNotifier {
     _user = UserModel.fromJson(user);
     notifyListeners();
   }
-
   
 }

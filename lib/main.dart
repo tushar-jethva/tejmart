@@ -16,11 +16,21 @@ void main() {
     ],
     child: const MyApp(),
   ));
+void main() {
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => SalesExecutiveProvider()),
+        ChangeNotifierProvider(create: (_) => CustomerProvider()),
+        ChangeNotifierProvider(create: (_) => CartProvider())
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
-
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {

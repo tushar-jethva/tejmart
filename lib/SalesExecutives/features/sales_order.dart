@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
 import 'package:provider/provider.dart';
+import 'package:tej_mart/SalesExecutives/controllers/sales_home_controller.dart';
 import 'package:tej_mart/SalesExecutives/features/sales_details.dart';
 import 'package:tej_mart/SalesExecutives/services/sales_prooduct_service.dart';
 import 'package:tej_mart/SalesExecutives/widgets/sales_order_container.dart';
@@ -15,50 +18,49 @@ class MySalesOrderScreen extends StatefulWidget {
 }
 
 class _MySalesOrderScreenState extends State<MySalesOrderScreen> {
+  final salesHomeController = Get.put(MySalesController());
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       final saler =
           Provider.of<SalesExecutiveProvider>(context, listen: false).user;
-      getAllSalesProduct(saler.id);
+      salesHomeController.getAllSalesProduct(
+          context: context, sales_id: saler.id);
     });
-  }
-
-  List<Map<String, dynamic>>? list;
-
-  getAllSalesProduct(String sales_id) async {
-    list = await SalesProductService()
-        .getAllSalesProducts(context: context, seller_id: sales_id);
-    setState(() {});
-    print(list);
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: list == null
-          ? Center(
-              child: MyLoader(color: indigo),
-            )
-          : GridView.builder(
-              gridDelegate:
-                  SliverGridDelegateWithFixedCrossAxisCount(crossAxisCount: 2),
-              itemCount: list!.length,
-              itemBuilder: ((context, index) {
-                return GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => MySalesDetailsScreen(
-                                    produt: list![index]['product'],
-                                    map: list![index],
-                                  )));
-                    },
-                    child: MySalesOrderContainer(map: list![index]));
-              })),
+    return Obx(
+      () => Scaffold(
+        body: salesHomeController.listOfIncomingOrders.isEmpty
+            ? const Center(
+                child: Text("No Orders found!"),
+              )
+            : GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2),
+                itemCount: salesHomeController.listOfIncomingOrders.length,
+                itemBuilder: ((context, index) {
+                  return GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => MySalesDetailssScreen(
+                                      produt: salesHomeController
+                                              .listOfIncomingOrders[index]
+                                          ['product'],
+                                      map: salesHomeController
+                                          .listOfIncomingOrders[index],
+                                    )));
+                      },
+                      child: MySalesOrderContainer(
+                          map:
+                              salesHomeController.listOfIncomingOrders[index]));
+                })),
+      ),
     );
   }
 }

@@ -1,11 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-import 'package:tej_mart/SalesExecutives/models/sales_addProduct.dart';
-import 'package:tej_mart/constants/colors.dart';
+import 'package:tej_mart/Features/details_screen.dart';
+import 'package:tej_mart/controller/user_controller.dart';
 import 'package:tej_mart/providers/customer_provider.dart';
-import 'package:tej_mart/services/favouritescreen.dart';
-import 'package:tej_mart/widgets/cart_item.dart';
-import 'package:tej_mart/widgets/loader.dart';
 import 'package:tej_mart/widgets/onefavourite.dart';
 
 class MyFavouriteScreen extends StatefulWidget {
@@ -17,36 +15,49 @@ class MyFavouriteScreen extends StatefulWidget {
 }
 
 class _MyFavouriteScreenState extends State<MyFavouriteScreen> {
+  final userController = Get.put(UserController());
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((timeStamp) {
       final user = Provider.of<CustomerProvider>(context, listen: false).user;
-      getAllWishlistProduct(user.id);
+      userController.getAllFavouriteItems(user_id: user.id, context: context);
     });
   }
 
-  List<SalesAddProductModel>? product;
-  void getAllWishlistProduct(String user_id) async {
-    product = await FavouriteService()
-        .getAllWishListProduct(context: context, user_id: user_id);
-    setState(() {});
-    
-  }
+  // List<SalesAddProductModel>? product;
+  // void getAllWishlistProduct(String user_id) async {
+  //   product = await FavouriteService()
+  //       .getAllWishListProduct(context: context, user_id: user_id);
+  //   setState(() {});
+  // }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: product == null
-          ? Center(
-              child: MyLoader(color: indigo),
-            )
-          : ListView.builder(
-              itemCount: product!.length,
-              itemBuilder: (context, index) {
-                return MyOneFavourite(product: product![index]);
-              }),
+    return Obx(
+      () => Scaffold(
+        body: userController.fList.isEmpty
+            ? const Center(child: Text("No favourite items!"))
+            : Padding(
+                padding: const EdgeInsets.only(top: 10.0),
+                child: ListView.builder(
+                    itemCount: userController.fList.length,
+                    itemBuilder: (context, index) {
+                      return GestureDetector(
+                        onTap: () {
+                          Navigator.pushNamed(
+                              context, MyDetailsScreen.routeName,
+                              arguments: {
+                                'product': userController.fList[index],
+                                'name': userController.fList[index].category
+                              });
+                        },
+                        child: MyOneFavourite(
+                            product: userController.fList[index]),
+                      );
+                    }),
+              ),
+      ),
     );
   }
 }

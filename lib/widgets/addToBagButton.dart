@@ -5,6 +5,7 @@ import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import 'package:tej_mart/constants/colors.dart';
+import 'package:tej_mart/constants/sizes.dart';
 import 'package:tej_mart/services/favouritescreen.dart';
 
 import '../services/cart_service.dart';
@@ -42,6 +43,7 @@ class _MyAddToBagButtonState extends State<MyAddToBagButton> {
 
   @override
   Widget build(BuildContext context) {
+    print(widget.quantity_product);
     return Container(
       height: 50,
       width: double.infinity,
@@ -96,7 +98,7 @@ class _MyAddToBagButtonState extends State<MyAddToBagButton> {
             },
             child: Container(
               height: 40,
-              width: 170,
+              width: getWidth(0.4, context),
               decoration: BoxDecoration(
                 color: white,
                 borderRadius: BorderRadius.circular(20),
