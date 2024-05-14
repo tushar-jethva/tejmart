@@ -6,7 +6,7 @@
         android:maxSdkVersion="32" />
         
     <application
-        android:label="tej_mart"
+        android:label="TezzMart"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:provider/provider.dart';
 import 'package:tej_mart/Features/init_screen.dart';
+import 'package:tej_mart/Features/splash_screen.dart';
 import 'package:tej_mart/constants/colors.dart';
 import 'package:tej_mart/providers/cart_provider.dart';
 import 'package:tej_mart/providers/customer_provider.dart';
@@ -23,7 +25,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Flutter Demo',
       theme: ThemeData(
@@ -34,7 +36,7 @@ class MyApp extends StatelessWidget {
             surfaceTintColor: white, elevation: 0, backgroundColor: white),
       ),
       onGenerateRoute: (settings) => generateRoute(settings),
-      home: const MyInitScreen(),
+      home: const MySplashScreen(),
     );
   }
 }

@@ -1,16 +1,24 @@
+import 'dart:io';
+
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tej_mart/Features/all_orders_screen.dart';
 import 'package:tej_mart/Features/homescreen.dart';
 import 'package:tej_mart/Features/init_screen.dart';
 import 'package:tej_mart/Features/order_details.dart';
-import 'package:tej_mart/SalesExecutives/models/sales_addProduct.dart';
 import 'package:tej_mart/constants/colors.dart';
+import 'package:tej_mart/constants/constants.dart';
 import 'package:tej_mart/constants/images_link.dart';
 import 'package:tej_mart/constants/sizes.dart';
 import 'package:tej_mart/constants/style.dart';
+import 'package:tej_mart/controller/user_controller.dart';
 import 'package:tej_mart/services/auth_service.dart';
 import 'package:tej_mart/services/order_service.dart';
 import 'package:tej_mart/widgets/order_container.dart';
@@ -27,6 +35,7 @@ class MyProfileScreen extends StatefulWidget {
 }
 
 class _MyProfileScreenState extends State<MyProfileScreen> {
+  final userController = Get.put(UserController());
   AddressAndAmountModel? details;
   List<Map<String, dynamic>>? list;
   @override
@@ -37,6 +46,7 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
       getAddressAndAmount(user.id);
       getAllUserOrders(user.id);
     });
+    userController.getImage();
   }
 
   getAddressAndAmount(String user_id) async {
@@ -58,17 +68,24 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
     print("User ${user.name}");
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: Text(
           "Welcome ${user.name}",
           style: textStyle().copyWith(color: black),
         ),
         actions: [
           GestureDetector(
-              onTap: () {
+              onTap: () async {
+                SharedPreferences pref = await SharedPreferences.getInstance();
+                pref.setString('x-auth-token', "");
+                pref.setString("path", "");
                 Navigator.pushNamedAndRemoveUntil(
                     context, MyInitScreen.routeName, (route) => false);
               },
-              child: const Icon(Icons.logout))
+              child: const Padding(
+                padding: EdgeInsets.only(right: 15.0),
+                child: Icon(Icons.logout),
+              ))
         ],
       ),
       body: Column(
@@ -78,14 +95,36 @@ class _MyProfileScreenState extends State<MyProfileScreen> {
           Column(
             children: [
               Center(
-                child: CircleAvatar(
-                  radius: 50,
-                  backgroundColor: lightGrey,
-                  backgroundImage: CachedNetworkImageProvider(
-                    userimage,
+                child: Stack(children: [
+                  Obx(
+                    () => CircleAvatar(
+                        radius: 50,
+                        backgroundColor: lightGrey,
+                        backgroundImage: userController.path.isNotEmpty
+                            ? FileImage(File(userController.path.value))
+                            : const AssetImage("assets/logotej.png")
+                                as ImageProvider),
                   ),
-                ),
+                  Positioned(
+                      bottom: 0,
+                      right: 5,
+                      child: GestureDetector(
+                        onTap: () async {
+                          XFile? image =
+                              await pickOneImage(source: ImageSource.gallery);
+                          SharedPreferences prefs =
+                              await SharedPreferences.getInstance();
+                          prefs.setString("path", image!.path);
+                          userController.getImage();
+                        },
+                        child: Icon(
+                          Icons.add,
+                          color: Colors.indigo,
+                        ),
+                      )),
+                ]),
               ),
+              const Gap(10),
               Text(
                 user.name,
                 style: textStyle().copyWith(color: black),

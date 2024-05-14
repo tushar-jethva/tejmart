@@ -3,14 +3,21 @@ import 'package:image_picker/image_picker.dart';
 import 'package:tej_mart/constants/style.dart';
 import 'package:pdf/widgets.dart' as pw;
 
-String url = 'https://tej-mart.onrender.com';
-// String url = 'http://192.168.235.230:3000';
+// String url = 'https://tej-mart.onrender.com';
+String url = 'http://192.168.235.230:3000';
 
 Future<List<XFile?>> pickMultipleImages() async {
   List<XFile?> images = await ImagePicker().pickMultiImage(
     imageQuality: 30,
   );
   return images;
+}
+
+Future<XFile?> pickOneImage({required ImageSource source}) async {
+  XFile? image = await ImagePicker().pickImage(source: source);
+  if (image != null) {
+    return image;
+  }
 }
 
 void showSnackBar(BuildContext context, String data) {

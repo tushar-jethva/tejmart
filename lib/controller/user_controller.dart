@@ -2,8 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tej_mart/SalesExecutives/models/sales_addProduct.dart';
-import 'package:tej_mart/SalesExecutives/services/sales_prooduct_service.dart';
 import 'package:tej_mart/services/cart_service.dart';
 import 'package:tej_mart/services/favouritescreen.dart';
 import 'package:tej_mart/services/product_service.dart';
@@ -65,6 +65,13 @@ class UserController extends GetxController {
     isWishlisted.value = await FavouriteService().isWishlistedProduct(
         context: context, user_id: userId, product_id: productId);
     print("isProduct");
+  }
+
+  RxString path = "".obs;
+  getImage() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String pathC = prefs.getString("path")!;
+    path.value = pathC;
   }
 
   @override

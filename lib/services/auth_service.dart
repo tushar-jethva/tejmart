@@ -120,4 +120,38 @@ class UserAuthService {
     }
     return user;
   }
+
+  Future<void> getUserDataForLogin({required BuildContext context}) async {
+    String t = "";
+    try {
+      SharedPreferences pref = await SharedPreferences.getInstance();
+      String? token = pref.getString('x-auth-token');
+      print("token is $token");
+      if (token == null) {
+        pref.setString('x-auth-token', "");
+      }
+      http.Response res = await http.get(
+        Uri.parse("$url/api/tokenIsValid"),
+        headers: {
+          'Content-Type': 'application/json;charset=UTF-8',
+          'x-auth-token': token!,
+        },
+      );
+      var response = jsonDecode(res.body);
+      print("response $response");
+      if (response == true) {
+        http.Response userRes = await http
+            .get(Uri.parse('$url/api/getUserData'), headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'x-auth-token': token
+        });
+
+        var userProvider =
+            Provider.of<CustomerProvider>(context, listen: false);
+        userProvider.setUser(userRes.body);
+        print(jsonDecode(userRes.body)['token']);
+        t = jsonDecode(userRes.body)['token'];
+      }
+    } catch (e) {}
+  }
 }

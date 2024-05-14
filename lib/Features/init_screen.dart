@@ -47,7 +47,7 @@ class _MyInitScreenState extends State<MyInitScreen> {
             Stack(
               children: [
                 SizedBox(
-                  height: getHeight(0.55, context),
+                  height: getHeight(0.59, context),
                   child: PageView(
                     controller: pageController,
                     scrollDirection: Axis.horizontal,
@@ -90,10 +90,11 @@ class _MyInitScreenState extends State<MyInitScreen> {
               ],
             ),
             Text(
-              'Welcome to TEJMart!',
+              'Welcome to TEZZMart!',
               style: GoogleFonts.montserrat().copyWith(
                   color: blue, fontSize: 20, fontWeight: FontWeight.w700),
             ),
+            Gap(getHeight(0.01, context)),
             Padding(
               padding: const EdgeInsets.only(left: 20.0, right: 20),
               child: Center(
@@ -108,7 +109,7 @@ class _MyInitScreenState extends State<MyInitScreen> {
                 ),
               ),
             ),
-            Gap(getHeight(0.06, context)),
+            Gap(getHeight(0.07, context)),
             InkWell(
               onTap: () {
                 Navigator.pushNamed(context, MySignInScreen.routeName);
