@@ -56,6 +56,21 @@ wishListRouter.post("/api/deleteWishListProducts",async(req,res)=>{
     catch(e){
         res.status(500).json({error:e.message})
     }
+});
+
+wishListRouter.get("/api/isWishlisted",async(req,res)=>{
+    try{
+        const isExist = await WishListModel.findOne({"user_id":req.query.user_id,"product_id":req.query.product_id});
+        if(isExist){
+            res.json({"isLiked":true});
+        }
+        else{
+            res.json({"isLiked":false})
+        }
+    }
+    catch(e){
+        res.status(500).json({error:e.message})
+    }
 })
 
 module.exports = wishListRouter;

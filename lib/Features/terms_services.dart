@@ -34,7 +34,7 @@ Any purchases made through the App are subject to our Payment Terms, including p
 We may revise these Terms from time to time in our sole discretion. All changes are effective immediately upon posting. Your continued use of the App after the posting of revised Terms constitutes your acceptance of such changes.
 These Terms are governed by and construed in accordance with the laws of surat. Any dispute arising out of or related to these Terms shall be subject to the exclusive jurisdiction of the courts of surat.
 If you have any questions or concerns about these Terms, please contact us at tezz.mart@gmail.com.
-               ''',
+              ''',
               style:
                   GoogleFonts.montserrat().copyWith(color: black, fontSize: 14),
             ),

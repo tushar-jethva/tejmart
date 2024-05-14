@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:tej_mart/Features/details_screen.dart';
 import 'package:tej_mart/SalesExecutives/models/sales_addProduct.dart';
 import 'package:tej_mart/constants/style.dart';
@@ -68,9 +69,13 @@ class _MyCartScreenState extends State<MyCartScreen> {
             style: textStyle(),
           ),
         ),
-        body: userController.list['product']!.isEmpty
-            ? const Center(
-                child: Text("Your cart is empty!"),
+        body: userController.list.isEmpty ||
+                userController.list['product']!.isEmpty
+            ? Center(
+                child: Text(
+                  "Your cart is empty!",
+                  style: GoogleFonts.montserrat(),
+                ),
               )
             : Column(
                 children: [

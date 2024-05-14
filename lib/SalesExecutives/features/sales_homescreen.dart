@@ -50,7 +50,7 @@ class _MySalesHomeScreenState extends State<MySalesHomeScreen> {
     return Obx(
       () => Scaffold(
         body: salesHomeController.list.isEmpty
-            ? MyLoader(color: indigo)
+            ? Center(child: MyLoader(color: indigo))
             : GridView.builder(
                 itemCount: salesHomeController.list.length,
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(

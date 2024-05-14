@@ -339,7 +339,7 @@ class _MyBuyScreenState extends State<MyBuyScreen> {
                       ),
                       Text(
                         details != null
-                            ? "\$${details!.a_balance.toString()}"
+                            ? "\$${details!.a_balance.toStringAsFixed(2)}"
                             : "0.0",
                         style: textStyle().copyWith(color: white, fontSize: 20),
                       )
@@ -384,10 +384,10 @@ class _MyBuyScreenState extends State<MyBuyScreen> {
                         .copyWith(fontSize: 16),
                   ),
                   Text(
-                    "Grand Total:  \$${widget.map['total']}",
+                    "Grand Total:  \$${(widget.map['total'] as double).toStringAsFixed(2)}",
                     style: textStyle().copyWith(color: white, fontSize: 16),
                   ),
-                  Gap(10),
+                  const Gap(10),
                   GestureDetector(
                     onTap: () {
                       double balance = double.parse(widget.map['total']!);

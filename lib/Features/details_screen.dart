@@ -58,7 +58,10 @@ class _MyDetailsScreenState extends State<MyDetailsScreen> {
               Navigator.pop(context);
             },
             child: const Icon(Icons.arrow_back_ios_new)),
-        title: MySearchBar(name: widget.map['name']),
+        title: Text(
+          object.name,
+          style: GoogleFonts.montserrat(),
+        ),
 
         // flexibleSpace: MySearchBar(name: widget.map['name']!),
       ),
@@ -207,7 +210,7 @@ class _MyDetailsScreenState extends State<MyDetailsScreen> {
                                 //     context: context, product_id: object.id);
                               }
                             },
-                            child: Icon(
+                            child: const Icon(
                               FluentSystemIcons.ic_fluent_remove_regular,
                               size: 20,
                             )),
@@ -219,10 +222,8 @@ class _MyDetailsScreenState extends State<MyDetailsScreen> {
                             onTap: () {
                               if (number < 6) number++;
                               setState(() {});
-                              // CartService().incrementQuantity(
-                              //     context: context, product_id: object.id);
                             },
-                            child: Icon(
+                            child: const Icon(
                               FluentSystemIcons.ic_fluent_add_regular,
                               size: 20,
                             )),

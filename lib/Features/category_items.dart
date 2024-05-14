@@ -58,7 +58,7 @@ class _MyCategoryListState extends State<MyCategoryList> {
               child: GridView.builder(
                   scrollDirection: Axis.vertical,
                   itemCount: list!.length,
-                  gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2,
                     mainAxisSpacing: 20,
                     crossAxisSpacing: 20,
