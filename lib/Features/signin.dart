@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tej_mart/Features/init_screen.dart';
 import 'package:tej_mart/Features/sign_up.dart';
 import 'package:tej_mart/constants/colors.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -9,7 +8,6 @@ import 'package:tej_mart/constants/images_link.dart';
 import 'package:tej_mart/constants/style.dart';
 import 'package:tej_mart/services/auth_service.dart';
 import 'package:tej_mart/widgets/auth_custom_button.dart';
-import 'package:tej_mart/widgets/custom_button.dart';
 import 'package:tej_mart/widgets/cutsom_textfield.dart';
 import 'package:tej_mart/widgets/loader.dart';
 

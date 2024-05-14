@@ -3,11 +3,9 @@ import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import 'package:tej_mart/constants/colors.dart';
 import 'package:tej_mart/constants/sizes.dart';
 import 'package:tej_mart/services/favouritescreen.dart';
-
 import '../services/cart_service.dart';
 
 class MyAddToBagButton extends StatefulWidget {
@@ -84,13 +82,13 @@ class _MyAddToBagButtonState extends State<MyAddToBagButton> {
                   Text(
                     "  WISHLIST",
                     style: GoogleFonts.montserrat()
-                        .copyWith(color: white, fontWeight: FontWeight.bold),
-                  )
+                    .copyWith(color: white, fontWeight: FontWeight.bold),
+                  ),
                 ],
               ),
             ),
           ),
-          Gap(10),
+          const Gap(10),
           GestureDetector(
             onTap: () {
               addToCart(
@@ -111,7 +109,7 @@ class _MyAddToBagButtonState extends State<MyAddToBagButton> {
                     color: indigo,
                   ),
                   Text(
-                    "  ADD TO BAG",
+                            "ADD TO BAG",
                     style: GoogleFonts.montserrat().copyWith(
                         color: indigo,
                         fontWeight: FontWeight.bold,

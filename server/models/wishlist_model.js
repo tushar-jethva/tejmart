@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 
 const wishListSchema =  mongoose.Schema({
-    
     user_id:{
         required:true,
         type:String,
@@ -10,7 +9,6 @@ const wishListSchema =  mongoose.Schema({
         required:true,
         type:String,
     }
-   
 });
 
 const WishListModel = mongoose.model("wishlist",wishListSchema);
