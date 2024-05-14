@@ -11,6 +11,7 @@ import 'package:tej_mart/Features/category_items.dart';
 import 'package:tej_mart/Features/search_screen.dart';
 import 'package:tej_mart/SalesExecutives/models/sales_addProduct.dart';
 import 'package:tej_mart/constants/colors.dart';
+import 'package:tej_mart/constants/constants.dart';
 import 'package:tej_mart/constants/images_link.dart';
 import 'package:tej_mart/constants/sizes.dart';
 import 'package:tej_mart/controller/user_controller.dart';
@@ -200,7 +201,9 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
                 leftText: "Trending this week",
                 rightText: "See all",
                 fontSize: 15,
-                onRightTap: () {},
+                onRightTap: () {
+                  showSnackBar(context, "Functionlity coming soon");
+                },
               ),
             ),
             const Gap(20),

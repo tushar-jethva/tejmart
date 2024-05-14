@@ -384,7 +384,7 @@ class _MyBuyScreenState extends State<MyBuyScreen> {
                         .copyWith(fontSize: 16),
                   ),
                   Text(
-                    "Grand Total:  \$${(widget.map['total'] as double).toStringAsFixed(2)}",
+                    "Grand Total:  \$${(widget.map['total'])}",
                     style: textStyle().copyWith(color: white, fontSize: 16),
                   ),
                   const Gap(10),

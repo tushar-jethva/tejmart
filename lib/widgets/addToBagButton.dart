@@ -2,9 +2,11 @@
 import 'package:fluentui_icons/fluentui_icons.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:tej_mart/constants/colors.dart';
 import 'package:tej_mart/constants/sizes.dart';
+import 'package:tej_mart/controller/user_controller.dart';
 import 'package:tej_mart/services/favouritescreen.dart';
 import '../services/cart_service.dart';
 
@@ -24,11 +26,20 @@ class MyAddToBagButton extends StatefulWidget {
 }
 
 class _MyAddToBagButtonState extends State<MyAddToBagButton> {
-  bool isWishlisted = false;
   String? data;
+  final userController = Get.put(UserController());
+
+  @override
+  void initState() {
+    super.initState();
+    userController.isProductWishlisted(
+        context: context, productId: widget.product_id, userId: widget.user_id);
+  }
+
   addToWishlist(String user_id, String product_id) async {
     await FavouriteService().addToWishlist(
         context: context, product_id: product_id, user_id: user_id);
+    print("addtowishlist");
   }
 
   addToCart(String user_id, String product_id, int quantity_product) async {
@@ -57,34 +68,46 @@ class _MyAddToBagButtonState extends State<MyAddToBagButton> {
             padding: const EdgeInsets.symmetric(horizontal: 30.0),
             child: GestureDetector(
               onTap: () {
-                if (!isWishlisted) {
+                if (!userController.isWishlisted.value) {
                   addToWishlist(widget.user_id, widget.product_id);
-                  setState(() {
-                    isWishlisted = true;
-                  });
+                  // userController.isProductWishlisted(
+                  //     context: context,
+                  //     productId: widget.product_id,
+                  //     userId: widget.user_id);
+                  userController.isWishlisted.value =
+                      !userController.isWishlisted.value;
                 } else {
-                  setState(() {
-                    isWishlisted = false;
-                  });
+                  userController.removeWishListItem(
+                      context: context,
+                      productId: widget.product_id,
+                      userId: widget.user_id);
+                  // userController.isProductWishlisted(
+                  //     context: context,
+                  //     productId: widget.product_id,
+                  //     userId: widget.user_id);
+                  userController.isWishlisted.value =
+                      !userController.isWishlisted.value;
                 }
               },
-              child: Row(
-                children: [
-                  isWishlisted
-                      ? Icon(
-                          FluentSystemIcons.ic_fluent_heart_filled,
-                          color: white,
-                        )
-                      : Icon(
-                          Icons.favorite_outline,
-                          color: white,
-                        ),
-                  Text(
-                    "  WISHLIST",
-                    style: GoogleFonts.montserrat()
-                    .copyWith(color: white, fontWeight: FontWeight.bold),
-                  ),
-                ],
+              child: Obx(
+                () => Row(
+                  children: [
+                    userController.isWishlisted.value
+                        ? Icon(
+                            FluentSystemIcons.ic_fluent_heart_filled,
+                            color: white,
+                          )
+                        : Icon(
+                            Icons.favorite_outline,
+                            color: white,
+                          ),
+                    Text(
+                      "  WISHLIST",
+                      style: GoogleFonts.montserrat()
+                          .copyWith(color: white, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
@@ -109,7 +132,7 @@ class _MyAddToBagButtonState extends State<MyAddToBagButton> {
                     color: indigo,
                   ),
                   Text(
-                            "ADD TO BAG",
+                    "ADD TO BAG",
                     style: GoogleFonts.montserrat().copyWith(
                         color: indigo,
                         fontWeight: FontWeight.bold,

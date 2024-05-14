@@ -9,6 +9,7 @@ wishListRouter.post("/api/addToWishlist",async(req,res)=>{
         const{product_id,user_id} = req.body;
 
         const isExist = await WishListModel.findOne({"user_id":user_id,"product_id":product_id});
+        console.log(isExist);
         if(!isExist){
             let wishProduct = new WishListModel({
                 user_id,
@@ -16,6 +17,7 @@ wishListRouter.post("/api/addToWishlist",async(req,res)=>{
             });
     
             wishProduct = await wishProduct.save();
+            console.log(wishProduct);
             res.json({"message":"product is added"});
         }
         else{
@@ -31,7 +33,6 @@ wishListRouter.post("/api/addToWishlist",async(req,res)=>{
 wishListRouter.get("/api/getWishListProducts",async(req,res)=>{
     try{
         let products = await WishListModel.find({"user_id":req.query.user_id});
-        console.log(products);
         let wishListProducts = [];
 
         for(let i=0;i<products.length;i++){
@@ -61,6 +62,7 @@ wishListRouter.post("/api/deleteWishListProducts",async(req,res)=>{
 wishListRouter.get("/api/isWishlisted",async(req,res)=>{
     try{
         const isExist = await WishListModel.findOne({"user_id":req.query.user_id,"product_id":req.query.product_id});
+        console.log("hello"+isExist);
         if(isExist){
             res.json({"isLiked":true});
         }

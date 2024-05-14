@@ -23,7 +23,6 @@ class FavouriteService {
           context: context,
           onSuccess: () {
             data = jsonDecode(res.body)['message'];
-            showSnackBar(context, data);
           });
     } catch (e) {
       showSnackBar(context, e.toString());
@@ -31,14 +30,15 @@ class FavouriteService {
     return data;
   }
 
-    Future<String> removeFromWishlist({
+  Future<String> removeFromWishlist({
     required BuildContext context,
     required String product_id,
     required String user_id,
   }) async {
     String data = "";
     try {
-      http.Response res = await http.post(Uri.parse("$url/api/deleteWishListProducts"),
+      http.Response res = await http.post(
+          Uri.parse("$url/api/deleteWishListProducts"),
           body: jsonEncode({"product_id": product_id, "user_id": user_id}),
           headers: <String, String>{
             'Content-Type': 'application/json; charset=UTF-8'
@@ -48,7 +48,6 @@ class FavouriteService {
           context: context,
           onSuccess: () {
             data = jsonDecode(res.body)['message'];
-            showSnackBar(context, data);
           });
     } catch (e) {
       showSnackBar(context, e.toString());
@@ -82,5 +81,31 @@ class FavouriteService {
     return list;
   }
 
-  
+  Future<bool> isWishlistedProduct(
+      {required BuildContext context,
+      required String user_id,
+      required String product_id}) async {
+    bool isWishlisted = false;
+    try {
+      print(user_id);
+      print(product_id);
+      http.Response res = await http.get(
+          Uri.parse(
+              "$url/api/isWishlisted?user_id=$user_id&product_id=$product_id"),
+          headers: <String, String>{
+            'Content-Type': 'application/json; charset=UTF-8'
+          });
+      print(res.body);
+
+      httpErrorHandled(
+          res: res,
+          context: context,
+          onSuccess: () {
+            isWishlisted = jsonDecode(res.body)['isLiked'];
+          });
+    } catch (e) {
+      showSnackBar(context, e.toString());
+    }
+    return isWishlisted;
+  }
 }

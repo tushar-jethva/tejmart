@@ -1,5 +1,3 @@
-
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -53,10 +51,20 @@ class UserController extends GetxController {
   removeWishListItem(
       {required BuildContext context,
       required String productId,
-      required String userId}) async{
+      required String userId}) async {
     await FavouriteService().removeFromWishlist(
         context: context, product_id: productId, user_id: userId);
     getAllFavouriteItems(user_id: userId, context: context);
+  }
+
+  RxBool isWishlisted = false.obs;
+  isProductWishlisted(
+      {required BuildContext context,
+      required String productId,
+      required String userId}) async {
+    isWishlisted.value = await FavouriteService().isWishlistedProduct(
+        context: context, user_id: userId, product_id: productId);
+    print("isProduct");
   }
 
   @override

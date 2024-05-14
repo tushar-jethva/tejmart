@@ -77,7 +77,7 @@ class _MyBottomCartState extends State<MyBottomCart> {
                   Navigator.pushNamed(context, MyBuyScreen.routeName,
                       arguments: {
                         "total_items": widget.total_items.toString(),
-                        "total": widget.total.toString(),
+                        "total": widget.total.toStringAsFixed(2),
                         "products": widget.products
                       });
                 } else {
