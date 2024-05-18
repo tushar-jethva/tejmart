@@ -36,7 +36,7 @@ class MyTrendingContainer extends StatelessWidget {
               Container(
                 margin: EdgeInsets.only(top: 7, left: 7, right: 7),
                 height: 120,
-                width: 160,
+                width: 180,
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10),
                     image: DecorationImage(

@@ -73,7 +73,7 @@ class _MyOneFavouriteState extends State<MyOneSearch> {
                   Row(
                     children: [
                       Text(
-                        "\$${discountedPrice}  ",
+                        "\$${discountedPrice.toStringAsFixed(2)}  ",
                         style: GoogleFonts.montserrat().copyWith(
                             color: black,
                             fontWeight: FontWeight.bold,
@@ -81,7 +81,7 @@ class _MyOneFavouriteState extends State<MyOneSearch> {
                             fontSize: 15),
                       ),
                       Text(
-                        "\$${widget.product.price}",
+                        "\$${widget.product.price.toStringAsFixed(2)}",
                         style: GoogleFonts.montserrat().copyWith(
                             color: grey,
                             fontWeight: FontWeight.bold,

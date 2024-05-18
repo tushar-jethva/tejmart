@@ -73,7 +73,7 @@ class _MyOneFavouriteState extends State<MyOneFavourite> {
                   Row(
                     children: [
                       Text(
-                        "\$${discountedPrice}  ",
+                        "\$${discountedPrice.toStringAsFixed(2)}  ",
                         style: GoogleFonts.montserrat().copyWith(
                             color: black,
                             fontWeight: FontWeight.bold,

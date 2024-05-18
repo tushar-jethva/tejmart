@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-import 'package:tej_mart/Features/homescreen.dart';
 import 'package:tej_mart/Features/init_screen.dart';
 import 'package:tej_mart/constants/sizes.dart';
 import 'package:tej_mart/providers/customer_provider.dart';
@@ -47,10 +46,9 @@ class _MySplashScreenState extends State<MySplashScreen>
 
   goToScreen() {
     final user = Provider.of<CustomerProvider>(context, listen: false).user;
-    print("user is ${user.token}");
     user.token.isNotEmpty
-        ? Get.to(() => const MyBottomBar())
-        : Get.to(() => const MyInitScreen());
+        ? Get.offAll(() => const MyBottomBar())
+        : Get.offAll(() => const MyInitScreen());
   }
 
   @override

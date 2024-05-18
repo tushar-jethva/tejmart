@@ -68,6 +68,13 @@ class _MySalesAddProductScreenState extends State<MySalesAddProductScreen> {
       ),
     ),
     DropdownMenuItem(
+      value: "Footwear",
+      child: Text(
+        "Footwear",
+        style: textStyle(),
+      ),
+    ),
+    DropdownMenuItem(
       value: "Beauty",
       child: Text(
         "Beauty",

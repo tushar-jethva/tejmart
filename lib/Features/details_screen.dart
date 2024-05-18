@@ -151,14 +151,14 @@ class _MyDetailsScreenState extends State<MyDetailsScreen> {
                   RichText(
                       text: TextSpan(children: [
                     TextSpan(
-                      text: "\$${discountedPrice}  ",
+                      text: "\$${discountedPrice.toStringAsFixed(2)}  ",
                       style: GoogleFonts.montserrat().copyWith(
                           color: black,
                           fontWeight: FontWeight.bold,
                           fontSize: 18),
                     ),
                     TextSpan(
-                      text: "\$${object.price}",
+                      text: "\$${object.price.toStringAsFixed(2)}",
                       style: GoogleFonts.montserrat().copyWith(
                           color: grey,
                           fontWeight: FontWeight.bold,

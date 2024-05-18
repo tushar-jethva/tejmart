@@ -58,7 +58,7 @@ class MyCategoryContainer extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 5.0),
             child: Text(
-              "\$${price}",
+              "\$${price.toStringAsFixed(2)}",
               style: GoogleFonts.montserrat().copyWith(
                   color: priceColor, fontWeight: FontWeight.bold, fontSize: 14),
             ),
