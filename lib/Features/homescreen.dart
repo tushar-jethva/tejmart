@@ -1,9 +1,6 @@
 import 'dart:async';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:gap/gap.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:tej_mart/Features/cartscreen.dart';
@@ -14,13 +11,14 @@ import 'package:tej_mart/constants/colors.dart';
 import 'package:tej_mart/constants/constants.dart';
 import 'package:tej_mart/constants/images_link.dart';
 import 'package:tej_mart/constants/sizes.dart';
-import 'package:tej_mart/controller/user_controller.dart';
 import 'package:tej_mart/providers/customer_provider.dart';
 import 'package:tej_mart/services/product_service.dart';
 import 'package:tej_mart/widgets/circle_avatar.dart';
-import 'package:tej_mart/widgets/cutsom_textfield.dart';
 import 'package:tej_mart/widgets/one_carousel.dart';
 import 'package:tej_mart/widgets/trending_container.dart';
+import 'package:tej_mart/widgets/trending_container_real.dart';
+
+import 'details_screen.dart';
 
 class MyHomeScreen extends StatefulWidget {
   static const routeName = '/homescreen';
@@ -43,7 +41,6 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
   List<SalesAddProductModel>? list;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     pageController = PageController(initialPage: 0);
     timer = Timer.periodic(const Duration(seconds: 2), (timer) {
@@ -51,6 +48,15 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
           duration: const Duration(seconds: 2), curve: Curves.fastOutSlowIn);
       currIndex++;
     });
+    getCategoryProducts("Men");
+  }
+
+  List<SalesAddProductModel>? listOfTrendingProducts;
+
+  getCategoryProducts(String category) async {
+    listOfTrendingProducts = await CustomerProductService()
+        .getCategoryWiseProduct(context: context, category: category);
+    setState(() {});
   }
 
   getAllSystemProducts() async {
@@ -199,54 +205,114 @@ class _MyHomeScreenState extends State<MyHomeScreen> {
                   EdgeInsets.symmetric(horizontal: getWidth(0.05, context)),
               child: MyHeaderText(
                 leftText: "Trending this week",
-                rightText: "See all",
+                rightText: "",
                 fontSize: 15,
-                onRightTap: () {
-                  showSnackBar(context, "Functionlity coming soon");
-                },
+                onRightTap: () {},
               ),
             ),
-            const Gap(20),
-
-            // const Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //   children: [
-            //     MyTrendingContainer(
-            //       itemName: "Suit",
-            //       price: 100,
-            //       forName: "Men",
-            //       url:
-            //           "https://img.freepik.com/free-vector/flat-spring-social-media-post-template_23-2149291888.jpg?w=900&t=st=1702316337~exp=1702316937~hmac=9816a124f21c48f10ba02e7a1d2b3ba77481a2ff47c5ac1293f17881fa4249c7",
-            //     ),
-            //     MyTrendingContainer(
-            //       itemName: "Suit",
-            //       forName: "Man",
-            //       price: 50,
-            //       url:
-            //           "https://img.freepik.com/free-vector/flat-spring-social-media-post-template_23-2149291888.jpg?w=900&t=st=1702316337~exp=1702316937~hmac=9816a124f21c48f10ba02e7a1d2b3ba77481a2ff47c5ac1293f17881fa4249c7",
-            //     ),
-            //   ],
-            // ),
-            // const Gap(20),
-            // const Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            //   children: [
-            //     MyTrendingContainer(
-            //       itemName: "Suit",
-            //       forName: "Man",
-            //       price: 50,
-            //       url:
-            //           "https://img.freepik.com/free-vector/flat-spring-social-media-post-template_23-2149291888.jpg?w=900&t=st=1702316337~exp=1702316937~hmac=9816a124f21c48f10ba02e7a1d2b3ba77481a2ff47c5ac1293f17881fa4249c7",
-            //     ),
-            //     MyTrendingContainer(
-            //       itemName: "Suit",
-            //       forName: "Man",
-            //       price: 50,
-            //       url:
-            //           "https://img.freepik.com/free-vector/flat-spring-social-media-post-template_23-2149291888.jpg?w=900&t=st=1702316337~exp=1702316937~hmac=9816a124f21c48f10ba02e7a1d2b3ba77481a2ff47c5ac1293f17881fa4249c7",
-            //     ),
-            //   ],
-            // ),
+            const Gap(10),
+            listOfTrendingProducts != null
+                ? Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: Column(
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, MyDetailsScreen.routeName,
+                                    arguments: {
+                                      "product": listOfTrendingProducts![0],
+                                      "name": "Men"
+                                    });
+                              },
+                              child: MyTrendingContainer2(
+                                  itemName: listOfTrendingProducts![0].name,
+                                  forName: "Men",
+                                  price: listOfTrendingProducts![0].price,
+                                  url: listOfTrendingProducts![0].images[0]),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, MyDetailsScreen.routeName,
+                                    arguments: {
+                                      "product": listOfTrendingProducts![1],
+                                      "name": "Men"
+                                    });
+                              },
+                              child: MyTrendingContainer2(
+                                  itemName: listOfTrendingProducts![1].name,
+                                  forName: "Men",
+                                  price: listOfTrendingProducts![1].price,
+                                  url: listOfTrendingProducts![1].images[0]),
+                            )
+                          ],
+                        ),
+                        Gap(getHeight(0.01, context)),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, MyDetailsScreen.routeName,
+                                    arguments: {
+                                      "product": listOfTrendingProducts![2],
+                                      "name": "Men"
+                                    });
+                              },
+                              child: MyTrendingContainer2(
+                                  itemName: listOfTrendingProducts![2].name,
+                                  forName: "Men",
+                                  price: listOfTrendingProducts![2].price,
+                                  url: listOfTrendingProducts![2].images[0]),
+                            ),
+                            GestureDetector(
+                              onTap: () {
+                                Navigator.pushNamed(
+                                    context, MyDetailsScreen.routeName,
+                                    arguments: {
+                                      "product": listOfTrendingProducts![3],
+                                      "name": "Men"
+                                    });
+                              },
+                              child: MyTrendingContainer2(
+                                  itemName: listOfTrendingProducts![3].name,
+                                  forName: "Men",
+                                  price: listOfTrendingProducts![3].price,
+                                  url: listOfTrendingProducts![3].images[0]),
+                            )
+                          ],
+                        )
+                      ],
+                    ),
+                  )
+                : Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                    child: SizedBox(
+                      height: getHeight(0.49, context),
+                      child: GridView.builder(
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  mainAxisSpacing: 15,
+                                  crossAxisSpacing: 15),
+                          itemBuilder: (context, index) {
+                            return Container(
+                              height: 180,
+                              width: 160,
+                              decoration: BoxDecoration(
+                                color: grey,
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                            );
+                          }),
+                    ),
+                  ),
+            const Gap(10),
           ],
         ),
       ),

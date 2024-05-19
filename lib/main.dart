@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:provider/provider.dart';
-import 'package:tej_mart/Features/init_screen.dart';
 import 'package:tej_mart/Features/splash_screen.dart';
 import 'package:tej_mart/constants/colors.dart';
 import 'package:tej_mart/providers/cart_provider.dart';
